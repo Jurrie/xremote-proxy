@@ -2,14 +2,13 @@ package org.jurr.behringer.x32.osc.xremoteproxy.messages.x32;
 
 import java.nio.charset.StandardCharsets;
 
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
 
-public class AbstractX32OSCMessage extends AbstractOSCMessage
+public abstract class AbstractX32OSCMessage extends AbstractOSCMessage
 {
-	protected AbstractX32OSCMessage(final AbstractEndpoint source, final byte[] data)
+	protected AbstractX32OSCMessage()
 	{
-		super(source, data);
+		super();
 	}
 
 	protected static boolean byteArrayStartsWith(final byte[] array, final String prefix)

@@ -1,22 +1,123 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.routers;
 
-import org.jurr.behringer.x32.osc.xremoteproxy.clients.QLCPlusClient;
-import org.jurr.behringer.x32.osc.xremoteproxy.commands.ButtonPressedQLCPlusOSCCommand;
-import org.jurr.behringer.x32.osc.xremoteproxy.commands.ButtonPressedQLCPlusOSCCommand.QLCPlusButton;
+import java.lang.invoke.MethodHandles;
+
+import com.illposed.osc.OSCBundle;
+import com.illposed.osc.OSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus.QLCPlusEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.AbstractX32Endpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
-import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonPressedX32OSCMessage;
-import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonPressedX32OSCMessage.X32Button;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.RawOSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.ButtonChangeQLCPlusOSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.ButtonChangeQLCPlusOSCMessage.QLCPlusButton;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.EncoderChangeQLCPlusOSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.EncoderChangeQLCPlusOSCMessage.QLCPlusEncoder;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonChangeX32OSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonChangeX32OSCMessage.X32Button;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.EncoderChangeX32OSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.EncoderChangeX32OSCMessage.X32Encoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class X32ToQLCPlusRouter extends AbstractRouter
 {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	@Override
-	public void onMessageReceived(final AbstractOSCMessage message)
+	public void onMessageReceived(final AbstractEndpoint<?> source, final AbstractOSCMessage message)
 	{
-		if (message instanceof ButtonPressedX32OSCMessage buttonPressedMsg)
+		// This logic also sends back to the party that sends the original message to us first. This is not correct, but other parties do not seem to mind.
+
+		if (message instanceof ButtonChangeX32OSCMessage buttonPressedMsg)
 		{
-			final ButtonPressedQLCPlusOSCCommand qlcPlusCommand = new ButtonPressedQLCPlusOSCCommand(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed());
-			getBus().getClients(QLCPlusClient.class).forEach(client -> send(client, qlcPlusCommand));
+			final ButtonChangeQLCPlusOSCMessage qlcPlusMessage = new ButtonChangeQLCPlusOSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed());
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
+			getBus().getEndpoints(AbstractX32Endpoint.class).forEach(client -> send(client, buttonPressedMsg));
 		}
+		else if (message instanceof EncoderChangeX32OSCMessage encoderChangeMsg)
+		{
+			final EncoderChangeQLCPlusOSCMessage qlcPlusMessage = new EncoderChangeQLCPlusOSCMessage(map(encoderChangeMsg.getEncoder()), encoderChangeMsg.getValue() / 127f);
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
+			getBus().getEndpoints(AbstractX32Endpoint.class).forEach(client -> send(client, encoderChangeMsg));
+		}
+		else if (message instanceof ButtonChangeQLCPlusOSCMessage buttonPressedMsg)
+		{
+			final ButtonChangeX32OSCMessage x32Message = new ButtonChangeX32OSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed());
+			getBus().getEndpoints(AbstractX32Endpoint.class).forEach(client -> send(client, x32Message));
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, buttonPressedMsg));
+		}
+		else if (message instanceof EncoderChangeQLCPlusOSCMessage encoderChangeMsg)
+		{
+			final EncoderChangeX32OSCMessage x32Message = new EncoderChangeX32OSCMessage(map(encoderChangeMsg.getEncoder()), (byte) (encoderChangeMsg.getValue() * 127));
+			getBus().getEndpoints(AbstractX32Endpoint.class).forEach(client -> send(client, x32Message));
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, encoderChangeMsg));
+		}
+		else if (message instanceof RawOSCMessage rawMsg)
+		{
+			if (rawMsg.getOscPacket() instanceof OSCMessage rawOSCMsg)
+			{
+				LOGGER.debug("Received raw QLC+ OSC message: {}", rawOSCMsg.getAddress());
+			}
+			else if (rawMsg.getOscPacket() instanceof OSCBundle rawOSCBundle)
+			{
+				LOGGER.debug("Received raw QLC+ OSC bundle: {}", rawOSCBundle.getTimestamp());
+			}
+			else
+			{
+				LOGGER.error("Received raw QLC+ message of unknown type");
+			}
+		}
+	}
+
+	private static X32Button map(final QLCPlusButton input)
+	{
+		return switch (input)
+		{
+		case A5 -> X32Button.A5;
+		case A6 -> X32Button.A6;
+		case A7 -> X32Button.A7;
+		case A8 -> X32Button.A8;
+		case A9 -> X32Button.A9;
+		case A10 -> X32Button.A10;
+		case A11 -> X32Button.A11;
+		case A12 -> X32Button.A12;
+		case B5 -> X32Button.B5;
+		case B6 -> X32Button.B6;
+		case B7 -> X32Button.B7;
+		case B8 -> X32Button.B8;
+		case B9 -> X32Button.B9;
+		case B10 -> X32Button.B10;
+		case B11 -> X32Button.B11;
+		case B12 -> X32Button.B12;
+		case C5 -> X32Button.C5;
+		case C6 -> X32Button.C6;
+		case C7 -> X32Button.C7;
+		case C8 -> X32Button.C8;
+		case C9 -> X32Button.C9;
+		case C10 -> X32Button.C10;
+		case C11 -> X32Button.C11;
+		case C12 -> X32Button.C12;
+		};
+	}
+
+	private static X32Encoder map(final QLCPlusEncoder input)
+	{
+		return switch (input)
+		{
+		case A1 -> X32Encoder.A1;
+		case A2 -> X32Encoder.A2;
+		case A3 -> X32Encoder.A3;
+		case A4 -> X32Encoder.A4;
+		case B1 -> X32Encoder.B1;
+		case B2 -> X32Encoder.B2;
+		case B3 -> X32Encoder.B3;
+		case B4 -> X32Encoder.B4;
+		case C1 -> X32Encoder.C1;
+		case C2 -> X32Encoder.C2;
+		case C3 -> X32Encoder.C3;
+		case C4 -> X32Encoder.C4;
+		};
 	}
 
 	private static QLCPlusButton map(final X32Button input)
@@ -47,6 +148,25 @@ public class X32ToQLCPlusRouter extends AbstractRouter
 		case C10 -> QLCPlusButton.C10;
 		case C11 -> QLCPlusButton.C11;
 		case C12 -> QLCPlusButton.C12;
+		};
+	}
+
+	private static QLCPlusEncoder map(final X32Encoder input)
+	{
+		return switch (input)
+		{
+		case A1 -> QLCPlusEncoder.A1;
+		case A2 -> QLCPlusEncoder.A2;
+		case A3 -> QLCPlusEncoder.A3;
+		case A4 -> QLCPlusEncoder.A4;
+		case B1 -> QLCPlusEncoder.B1;
+		case B2 -> QLCPlusEncoder.B2;
+		case B3 -> QLCPlusEncoder.B3;
+		case B4 -> QLCPlusEncoder.B4;
+		case C1 -> QLCPlusEncoder.C1;
+		case C2 -> QLCPlusEncoder.C2;
+		case C3 -> QLCPlusEncoder.C3;
+		case C4 -> QLCPlusEncoder.C4;
 		};
 	}
 }

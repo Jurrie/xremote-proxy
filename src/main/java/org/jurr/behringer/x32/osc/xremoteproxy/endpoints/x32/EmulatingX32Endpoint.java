@@ -1,53 +1,17 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32;
 
-import java.lang.invoke.MethodHandles;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.MultiClientUDPTransport;
 
+/**
+ * This is an endpoint for clients that send X32 OSC messages, but who we do not want to send /xremote messages to.
+ */
 public class EmulatingX32Endpoint extends AbstractX32Endpoint
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-	public EmulatingX32Endpoint(final int listenPort) throws SocketException
+	public EmulatingX32Endpoint(final InetSocketAddress local) throws IOException
 	{
-		super(new DatagramSocket(listenPort));
-	}
-
-	@Override
-	public void run()
-	{
-		LOGGER.debug("Endpoint started on port {}", getDatagramSocket().getLocalPort());
-		super.run();
-	}
-
-	@Override
-	public void signalStop()
-	{
-		LOGGER.debug("Endpoint stopping.");
-		super.signalStop();
-	}
-
-	@Override
-	public void waitUntilStopped() throws InterruptedException
-	{
-		super.waitUntilStopped();
-		LOGGER.debug("Endpoint stopped.");
-	}
-
-	@Override
-	public void waitUntilStopped(long millis) throws InterruptedException
-	{
-		super.waitUntilStopped(millis);
-		LOGGER.debug("Endpoint stopped.");
-	}
-
-	@Override
-	public void waitUntilStopped(long millis, int nanos) throws InterruptedException
-	{
-		super.waitUntilStopped(millis, nanos);
-		LOGGER.debug("Endpoint stopped.");
+		super(new MultiClientUDPTransport(local));
 	}
 }

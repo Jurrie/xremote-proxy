@@ -1,10 +1,10 @@
 package org.jurr.behringer.x32.osc.xremoteproxy;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jurr.behringer.x32.osc.xremoteproxy.clients.AbstractClient;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter;
@@ -15,30 +15,23 @@ public class Bus
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private List<AbstractEndpoint> endpoints;
+	private List<AbstractEndpoint<?>> endpoints;
 	private List<AbstractRouter> routers;
-	private List<AbstractClient<?>> clients;
 
-	// This class is responsible for keeping track of all clients, routers and endpoints.
+	// This class is responsible for keeping track of all endpoints and routers.
 
 	public Bus()
 	{
 		endpoints = new ArrayList<>();
 		routers = new ArrayList<>();
-		clients = new ArrayList<>();
 	}
 
-	public List<AbstractClient<?>> getClients()
+	public <T extends AbstractEndpoint<?>> List<T> getEndpoints(final Class<T> ofClass)
 	{
-		return List.copyOf(clients);
+		return endpoints.stream().filter(ofClass::isInstance).map(ofClass::cast).toList();
 	}
 
-	public <T extends AbstractClient<?>> List<T> getClients(final Class<T> ofClass)
-	{
-		return clients.stream().filter(ofClass::isInstance).map(ofClass::cast).toList();
-	}
-
-	public void registerEndpoint(final AbstractEndpoint endpoint)
+	public void registerEndpoint(final AbstractEndpoint<?> endpoint)
 	{
 		endpoint.start(this);
 		endpoints.add(endpoint);
@@ -50,48 +43,41 @@ public class Bus
 		routers.add(router);
 	}
 
-	public void registerClient(final AbstractClient<?> client)
-	{
-		client.start(this);
-		clients.add(client);
-	}
-
 	public void stop() throws InterruptedException
 	{
-		for (final AbstractClient<?> client : clients)
-		{
-			client.signalStop();
-		}
 		for (final AbstractRouter router : routers)
 		{
 			router.signalStop();
 		}
-		for (final AbstractEndpoint endpoint : endpoints)
+		for (final AbstractEndpoint<?> endpoint : endpoints)
 		{
-			endpoint.signalStop();
+			try
+			{
+				endpoint.signalStop();
+			}
+			catch (IOException e)
+			{
+				LOGGER.error("Error while stopping endpoint.", e);
+			}
 		}
 
-		for (final AbstractClient<?> client : clients)
-		{
-			client.waitUntilStopped();
-		}
 		for (final AbstractRouter router : routers)
 		{
 			router.waitUntilStopped();
 		}
-		for (final AbstractEndpoint endpoint : endpoints)
+		for (final AbstractEndpoint<?> endpoint : endpoints)
 		{
 			endpoint.waitUntilStopped();
 		}
 	}
 
-	public void messageReceived(final AbstractOSCMessage message)
+	public void messageReceived(final AbstractEndpoint<?> source, final AbstractOSCMessage message)
 	{
 		LOGGER.debug("Received message: {}.", message);
 
 		for (AbstractRouter router : routers)
 		{
-			router.onMessageReceived(message);
+			router.onMessageReceived(source, message);
 		}
 	}
 }
