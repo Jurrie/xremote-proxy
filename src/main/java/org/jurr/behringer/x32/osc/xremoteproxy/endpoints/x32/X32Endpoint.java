@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.Collections;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCSerializeException;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.LocalRemoteUDPTransport;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.MultiClientUDPTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class X32Endpoint extends AbstractX32Endpoint
 
 	private X32Endpoint(final InetSocketAddress local, final InetSocketAddress x32Address) throws IOException
 	{
-		super(new LocalRemoteUDPTransport(local, x32Address, new X32OSCSerializerAndParserBuilder()));
+		super(new MultiClientUDPTransport(local, Collections.singletonList(x32Address), new X32OSCSerializerAndParserBuilder()));
 		this.x32Address = x32Address;
 	}
 

@@ -40,8 +40,10 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 		{
 			switch (transport)
 			{
-			case LocalRemoteUDPTransport lrUDPTransport -> LOGGER.debug("Endpoint {} started listening on port {} and sending to {}:{}", getName(), lrUDPTransport.getLocal().getPort(), lrUDPTransport.getRemote().getAddress().getCanonicalHostName(), lrUDPTransport.getRemote().getPort());
-			case MultiClientUDPTransport mcUDPTransport -> LOGGER.debug("Endpoint {} started listening on port {} (sending to all clients that send to us first)", getName(), mcUDPTransport.getLocal().getPort());
+			case MultiClientUDPTransport mcUDPTransport -> {
+				final String remotes = mcUDPTransport.getRemotes().stream().map(r -> r.getAddress().getCanonicalHostName() + ":" + r.getPort()).reduce((a, b) -> a + ", " + b).map(r -> r + " and ").orElse("");
+				LOGGER.debug("Endpoint {} started listening on port {} (sending to {}all clients that send to us first)", getName(), mcUDPTransport.getLocal().getPort(), remotes);
+			}
 			default -> LOGGER.debug("Endpoint {} started listening", getName());
 			}
 		}
