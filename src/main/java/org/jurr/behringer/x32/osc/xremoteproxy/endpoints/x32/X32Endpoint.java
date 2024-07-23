@@ -21,8 +21,8 @@ public class X32Endpoint extends AbstractX32Endpoint
 
 	// This class is responsible for receiving commands sent by the X32. It is also responsible for sending /xremote calls every 8 seconds.
 
+	public static final int X32_PORT = 10023;
 	private static final OSCMessage XREMOTE_OSC_MESSAGE = new OSCMessage("/xremote");
-	private static final int X32_PORT = 10023;
 
 	private final InetSocketAddress x32Address;
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);

@@ -28,6 +28,16 @@
 				<artifactId>logback-classic</artifactId>
 				<version>1.5.6</version>
 			</dependency>
+			<dependency>
+				<groupId>com.beust</groupId>
+				<artifactId>jcommander</artifactId>
+				<version>1.82</version>
+			</dependency>
+			<dependency>
+				<groupId>org.fusesource.jansi</groupId>
+				<artifactId>jansi</artifactId>
+				<version>2.4.1</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -43,6 +53,14 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.fusesource.jansi</groupId>
+			<artifactId>jansi</artifactId>
 		</dependency>
 	</dependencies>
 </project>
