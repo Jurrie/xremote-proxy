@@ -10,7 +10,7 @@ import org.jurr.behringer.x32.osc.xremoteproxy.messages.CorruptOSCMessageExcepti
 
 public class EncoderChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 {
-	private static final Pattern ADDRESS = Pattern.compile("^/encoder/(?<encoderId>[ABC]\\d{1})/value.*");
+	private static final Pattern ADDRESS = Pattern.compile("^/encoder/(?<encoderId>[ABC]\\d)/value.*");
 
 	public enum QLCPlusEncoder
 	{

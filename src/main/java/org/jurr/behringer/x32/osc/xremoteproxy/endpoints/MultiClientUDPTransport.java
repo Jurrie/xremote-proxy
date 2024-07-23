@@ -74,20 +74,17 @@ public class MultiClientUDPTransport implements Transport
 		final DatagramChannel tmpChannel;
 		if (LibraryInfo.hasStandardProtocolFamily())
 		{
-			final InetSocketAddress localIsa = local;
-			localIsa.getAddress().getClass();
-
-			if (localIsa.getAddress() instanceof Inet4Address)
+			if (local.getAddress() instanceof Inet4Address)
 			{
 				tmpChannel = DatagramChannel.open(StandardProtocolFamily.INET);
 			}
-			else if (localIsa.getAddress() instanceof Inet6Address)
+			else if (local.getAddress() instanceof Inet6Address)
 			{
 				tmpChannel = DatagramChannel.open(StandardProtocolFamily.INET6);
 			}
 			else
 			{
-				throw new IllegalArgumentException("Unknown address type: " + localIsa.getAddress().getClass().getCanonicalName());
+				throw new IllegalArgumentException("Unknown address type: " + local.getAddress().getClass().getCanonicalName());
 			}
 		}
 		else
