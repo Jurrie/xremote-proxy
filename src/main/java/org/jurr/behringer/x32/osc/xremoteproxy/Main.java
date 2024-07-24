@@ -72,13 +72,16 @@ public class Main
 
 		final Bus hub = new Bus();
 
-		final X32Endpoint x32Endpoint = new X32Endpoint(Settings.INSTANCE.getX32Host());
+		// TODO: Actually, we can merge X32 endpoint and emulating x32 endpoint. The X32's listed on startup get the /xremote command, the ones detected do not.
+		// We might even do --x32 1.2.3.4:123 --x32 2.3.4.5:345 --fake-x32 3.4.1.1:1234 etc..
+
+		final X32Endpoint x32Endpoint = new X32Endpoint(Settings.INSTANCE.getX32Addresses());
 		hub.registerEndpoint(x32Endpoint);
 
-		final EmulatingX32Endpoint emulatingX32Endpoint = new EmulatingX32Endpoint(Settings.INSTANCE.getX32ClientsListenAddress());
+		final EmulatingX32Endpoint emulatingX32Endpoint = new EmulatingX32Endpoint(Settings.INSTANCE.getX32ListenAddress());
 		hub.registerEndpoint(emulatingX32Endpoint);
 
-		final QLCPlusEndpoint qlcPlusEndpoint = new QLCPlusEndpoint(Settings.INSTANCE.getQLCPlusListenAddress(), Settings.INSTANCE.getQLCPlusAddress());
+		final QLCPlusEndpoint qlcPlusEndpoint = new QLCPlusEndpoint(Settings.INSTANCE.getQLCPlusListenAddress(), Settings.INSTANCE.getQLCPlusAddresses());
 		hub.registerEndpoint(qlcPlusEndpoint);
 
 		final X32ToQLCPlusRouter x32ToQLCPlusRouter = new X32ToQLCPlusRouter();

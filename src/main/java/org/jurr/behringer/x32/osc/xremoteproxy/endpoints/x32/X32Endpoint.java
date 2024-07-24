@@ -2,9 +2,8 @@ package org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -24,18 +23,18 @@ public class X32Endpoint extends AbstractX32Endpoint
 	public static final int X32_PORT = 10023;
 	private static final OSCMessage XREMOTE_OSC_MESSAGE = new OSCMessage("/xremote");
 
-	private final InetSocketAddress x32Address;
+	private final List<InetSocketAddress> x32Addresses;
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-	public X32Endpoint(final InetAddress x32Address) throws IOException
+	public X32Endpoint(final List<InetSocketAddress> x32Addresses) throws IOException
 	{
-		this(new InetSocketAddress(0), new InetSocketAddress(x32Address, X32_PORT));
+		this(new InetSocketAddress(0), x32Addresses);
 	}
 
-	private X32Endpoint(final InetSocketAddress local, final InetSocketAddress x32Address) throws IOException
+	private X32Endpoint(final InetSocketAddress local, final List<InetSocketAddress> x32Addresses) throws IOException
 	{
-		super(new MultiClientUDPTransport(local, Collections.singletonList(x32Address), new X32OSCSerializerAndParserBuilder()));
-		this.x32Address = x32Address;
+		super(new MultiClientUDPTransport(local, x32Addresses, new X32OSCSerializerAndParserBuilder()));
+		this.x32Addresses = x32Addresses;
 	}
 
 	@Override
@@ -74,9 +73,11 @@ public class X32Endpoint extends AbstractX32Endpoint
 		{
 			try
 			{
-				getTransport().send(XREMOTE_OSC_MESSAGE);
-
-				LOGGER.debug("Sent /xremote to {}.", x32Address.getAddress().getCanonicalHostName());
+				for (final InetSocketAddress x32Address : x32Addresses)
+				{
+					getTransport().send(XREMOTE_OSC_MESSAGE);
+					LOGGER.debug("Sent /xremote to {}.", x32Address.getAddress().getCanonicalHostName());
+				}
 			}
 			catch (IOException | OSCSerializeException e)
 			{

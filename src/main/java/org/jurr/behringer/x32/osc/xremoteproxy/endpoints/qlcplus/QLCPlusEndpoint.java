@@ -3,7 +3,7 @@ package org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
-import java.util.Collections;
+import java.util.List;
 
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.OSCParseException;
@@ -19,11 +19,14 @@ public class QLCPlusEndpoint extends AbstractEndpoint<AbstractQLCPlusOSCMessage>
 {
 	// This class is responsible for receiving messages sent by QLC+ and converting them to X32 lingo.
 
+	public static final int DEFAULT_SEND_PORT = 7700;
+	public static final int DEFAULT_RECEIVE_PORT = 9000;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public QLCPlusEndpoint(final InetSocketAddress local, final InetSocketAddress remote) throws IOException
+	public QLCPlusEndpoint(final InetSocketAddress local, final List<InetSocketAddress> remotes) throws IOException
 	{
-		super(new MultiClientUDPTransport(local, Collections.singletonList(remote)));
+		super(new MultiClientUDPTransport(local, remotes));
 	}
 
 	@Override

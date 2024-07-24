@@ -1,10 +1,12 @@
 package org.jurr.behringer.x32.osc.xremoteproxy;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
+import java.util.List;
 
+import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus.QLCPlusEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.X32Endpoint;
 
 public final class Settings
@@ -24,26 +26,17 @@ public final class Settings
 	@Parameter(names = { "--trace", "-t", "--debug", "-d" }, description = "Trace output (implies -v)")
 	private boolean traceOutput = false;
 
-	@Parameter(names = { "--x32-host" }, description = "Hostname or IP address where the X32 lives", required = true)
-	private String x32Host;
+	@Parameter(names = { "--x32" }, description = "Hostname (or IP address) and port where the X32 lives. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". While typically you'ld only have one X32, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = X32InetSocketAddressConverter.class)
+	private List<InetSocketAddress> x32Address;
 
-	@Parameter(names = { "--qlcplus-host" }, description = "Hostname or IP address where QLC+ lives", required = true)
-	private String qlcPlusHost;
+	@Parameter(names = { "--qlcplus" }, description = "Hostname (or IP address) and port where QLC+ lives. Format is \"host:port\" and default port is " + QLCPlusEndpoint.DEFAULT_SEND_PORT + ". While typically you'ld only have one QLC+ instance, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = QLCPlusInetSocketAddressConverter.class)
+	private List<InetSocketAddress> qlcPlusAddress;
 
-	@Parameter(names = { "--qlcplus-port" }, description = "Post where to send QLC+ messages to (default is 7700)")
-	private int qlcPlusPort = 7700;
+	@Parameter(names = { "--qlcplus-listen" }, description = "Hostname (or IP address) and port to listen on for QLC+ messages. Format is \"host:port\" and default is 0.0.0.0:" + QLCPlusEndpoint.DEFAULT_RECEIVE_PORT + ".", converter = QLCPlusListenInetSocketAddressConverter.class)
+	private InetSocketAddress qlcPlusListenAddress = new InetSocketAddress(QLCPlusEndpoint.DEFAULT_RECEIVE_PORT);
 
-	@Parameter(names = { "--qlcplus-listen-host" }, description = "Hostname or IP address to listen on for QLC+ messages (default is 0.0.0.0)")
-	private String qlcPlusListenHost;
-
-	@Parameter(names = { "--qlcplus-listen-port" }, description = "Post where to listen on for QLC+ messages (default is 9000)")
-	private int qlcPlusListenPort = 9000;
-
-	@Parameter(names = { "--x32-listen-host" }, description = "Hostname or IP address to listen on for messages of X32 clients (default is 0.0.0.0)")
-	private String x32ClientsListenHost;
-
-	@Parameter(names = { "--x32-listen-port" }, description = "Port where to listen on for messages of X32 clients (default is " + X32Endpoint.X32_PORT + ")")
-	private int x32ClientsListenPort = X32Endpoint.X32_PORT;
+	@Parameter(names = { "--x32-listen" }, description = "Hostname (or IP address) and port to listen on for messages of X32 clients. Format is \"host:port\" and default is 0.0.0.0:" + X32Endpoint.X32_PORT + ".", converter = X32InetSocketAddressConverter.class)
+	private InetSocketAddress x32ListenAddress = new InetSocketAddress(X32Endpoint.X32_PORT);
 
 	public boolean isHelp()
 	{
@@ -60,23 +53,74 @@ public final class Settings
 		return traceOutput;
 	}
 
-	public InetAddress getX32Host() throws UnknownHostException
+	public List<InetSocketAddress> getX32Addresses()
 	{
-		return InetAddress.getByName(x32Host);
+		return x32Address;
 	}
 
-	public InetSocketAddress getQLCPlusAddress() throws UnknownHostException
+	public List<InetSocketAddress> getQLCPlusAddresses()
 	{
-		return new InetSocketAddress(InetAddress.getByName(qlcPlusHost), qlcPlusPort);
+		return qlcPlusAddress;
 	}
 
-	public InetSocketAddress getQLCPlusListenAddress() throws UnknownHostException
+	public InetSocketAddress getQLCPlusListenAddress()
 	{
-		return qlcPlusListenHost == null ? new InetSocketAddress(qlcPlusListenPort) : new InetSocketAddress(InetAddress.getByName(qlcPlusListenHost), qlcPlusListenPort);
+		return qlcPlusListenAddress;
 	}
 
-	public InetSocketAddress getX32ClientsListenAddress() throws UnknownHostException
+	public InetSocketAddress getX32ListenAddress()
 	{
-		return x32ClientsListenHost == null ? new InetSocketAddress(x32ClientsListenPort) : new InetSocketAddress(InetAddress.getByName(x32ClientsListenHost), x32ClientsListenPort);
+		return x32ListenAddress;
+	}
+
+	private abstract static class InetSocketAddressConverter implements IStringConverter<InetSocketAddress>
+	{
+		@Override
+		public InetSocketAddress convert(final String value)
+		{
+			final String[] parts = value.split(":");
+			final Integer defaultPort = getDefaultPort();
+			if (parts.length == 1 && defaultPort != null)
+			{
+				return new InetSocketAddress(parts[0], defaultPort);
+			}
+			else if (parts.length == 2)
+			{
+				return new InetSocketAddress(parts[0], Integer.parseInt(parts[1]));
+			}
+			else
+			{
+				throw new ParameterException("Expected format is \"host:port\"");
+			}
+		}
+
+		protected abstract Integer getDefaultPort();
+	}
+
+	private static class X32InetSocketAddressConverter extends InetSocketAddressConverter
+	{
+		@Override
+		protected Integer getDefaultPort()
+		{
+			return X32Endpoint.X32_PORT;
+		}
+	}
+
+	private static class QLCPlusInetSocketAddressConverter extends InetSocketAddressConverter
+	{
+		@Override
+		protected Integer getDefaultPort()
+		{
+			return QLCPlusEndpoint.DEFAULT_SEND_PORT;
+		}
+	}
+
+	private static class QLCPlusListenInetSocketAddressConverter extends InetSocketAddressConverter
+	{
+		@Override
+		protected Integer getDefaultPort()
+		{
+			return QLCPlusEndpoint.DEFAULT_RECEIVE_PORT;
+		}
 	}
 }
