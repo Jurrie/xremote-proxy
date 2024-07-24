@@ -7,10 +7,12 @@ import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 import org.fusesource.jansi.AnsiConsole;
 import org.jurr.behringer.x32.osc.xremoteproxy.Settings;
-import org.slf4j.helpers.MarkerIgnoringBase;
+import org.slf4j.Marker;
+import org.slf4j.event.Level;
+import org.slf4j.helpers.LegacyAbstractLogger;
 import org.slf4j.helpers.MessageFormatter;
 
-public class ConsoleLogger extends MarkerIgnoringBase
+public class ConsoleLogger extends LegacyAbstractLogger
 {
 	private static final long serialVersionUID = 1L;
 
@@ -22,145 +24,56 @@ public class ConsoleLogger extends MarkerIgnoringBase
 	}
 
 	@Override
+	protected String getFullyQualifiedCallerName()
+	{
+		// ???
+		return name;
+	}
+
+	@Override
+	protected void handleNormalizedLoggingCall(Level level, Marker marker, String format, Object[] argArray, Throwable t)
+	{
+		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
+		switch (level)
+		{
+		case TRACE:
+			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "TRACE" + ": " + message + Ansi.ansi().reset());
+			break;
+		case DEBUG:
+			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "DEBUG" + ": " + message + Ansi.ansi().reset());
+			break;
+		case INFO:
+			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.WHITE) + "INFO " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			break;
+		case WARN:
+			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.YELLOW) + "WARN " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			break;
+		case ERROR:
+			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.RED) + "ERROR" + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			break;
+		}
+		if (t != null)
+		{
+			t.printStackTrace(System.out);
+		}
+	}
+
+	@Override
 	public boolean isTraceEnabled()
 	{
 		return Settings.INSTANCE.isTraceOutput();
 	}
 
 	@Override
-	public void trace(final String msg)
-	{
-		if (!isTraceEnabled())
-		{
-			return;
-		}
-
-		trace(msg, null, null);
-	}
-
-	@Override
-	public void trace(final String format, final Object arg)
-	{
-		if (!isTraceEnabled())
-		{
-			return;
-		}
-
-		trace(format, new Object[] { arg }, null);
-	}
-
-	@Override
-	public void trace(final String format, final Object arg1, final Object arg2)
-	{
-		if (!isTraceEnabled())
-		{
-			return;
-		}
-
-		trace(format, new Object[] { arg1, arg2 }, null);
-	}
-
-	@Override
-	public void trace(final String format, final Object[] argArray)
-	{
-		if (!isTraceEnabled())
-		{
-			return;
-		}
-
-		trace(format, argArray, null);
-	}
-
-	@Override
-	public void trace(final String msg, final Throwable t)
-	{
-		if (!isTraceEnabled())
-		{
-			return;
-		}
-
-		trace(msg, null, t);
-	}
-
-	protected void trace(final String format, final Object[] argArray, final Throwable t)
-	{
-		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
-		AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "TRACE" + ": " + message + Ansi.ansi().reset());
-		if (t != null)
-		{
-			t.printStackTrace(System.out);
-		}
-	}
-
-	@Override
 	public boolean isDebugEnabled()
 	{
+		if (name.equals("com.illposed.osc.argument.handler.Activator"))
+		{
+			// This class keeps spamming us with a message "java.lang.ClassNotFoundException: com.illposed.osc.argument.handler.AwtColorArgumentHandler".
+			// Shut up that message here.
+			return false;
+		}
 		return Settings.INSTANCE.isVerboseOutput();
-	}
-
-	@Override
-	public void debug(final String msg)
-	{
-		if (!isDebugEnabled())
-		{
-			return;
-		}
-
-		debug(msg, null, null);
-	}
-
-	@Override
-	public void debug(final String format, final Object arg)
-	{
-		if (!isDebugEnabled())
-		{
-			return;
-		}
-
-		debug(format, new Object[] { arg }, null);
-	}
-
-	@Override
-	public void debug(final String format, final Object arg1, final Object arg2)
-	{
-		if (!isDebugEnabled())
-		{
-			return;
-		}
-
-		debug(format, new Object[] { arg1, arg2 }, null);
-	}
-
-	@Override
-	public void debug(final String format, final Object[] argArray)
-	{
-		if (!isDebugEnabled())
-		{
-			return;
-		}
-
-		debug(format, argArray, null);
-	}
-
-	@Override
-	public void debug(final String msg, final Throwable t)
-	{
-		if (!isDebugEnabled())
-		{
-			return;
-		}
-
-		debug(msg, null, t);
-	}
-
-	protected void debug(final String format, final Object[] argArray, final Throwable t)
-	{
-		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
-		AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "DEBUG" + ": " + message + Ansi.ansi().reset());
-		if (t != null)
-		{
-			t.printStackTrace(System.out);
-		}
 	}
 
 	@Override
@@ -170,210 +83,15 @@ public class ConsoleLogger extends MarkerIgnoringBase
 	}
 
 	@Override
-	public void info(final String msg)
-	{
-		if (!isInfoEnabled())
-		{
-			return;
-		}
-
-		info(msg, null, null);
-	}
-
-	@Override
-	public void info(final String format, final Object arg)
-	{
-		if (!isInfoEnabled())
-		{
-			return;
-		}
-
-		info(format, new Object[] { arg }, null);
-	}
-
-	@Override
-	public void info(final String format, final Object arg1, final Object arg2)
-	{
-		if (!isInfoEnabled())
-		{
-			return;
-		}
-
-		info(format, new Object[] { arg1, arg2 }, null);
-	}
-
-	@Override
-	public void info(final String format, final Object[] argArray)
-	{
-		if (!isInfoEnabled())
-		{
-			return;
-		}
-
-		info(format, argArray, null);
-	}
-
-	@Override
-	public void info(final String msg, final Throwable t)
-	{
-		if (!isInfoEnabled())
-		{
-			return;
-		}
-
-		info(msg, null, t);
-	}
-
-	protected void info(final String format, final Object[] argArray, final Throwable t)
-	{
-		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
-		AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.WHITE) + "INFO " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
-		if (t != null)
-		{
-			t.printStackTrace(System.out);
-		}
-	}
-
-	@Override
 	public boolean isWarnEnabled()
 	{
 		return true;
 	}
 
 	@Override
-	public void warn(final String msg)
-	{
-		if (!isWarnEnabled())
-		{
-			return;
-		}
-
-		warn(msg, null, null);
-	}
-
-	@Override
-	public void warn(final String format, final Object arg)
-	{
-		if (!isWarnEnabled())
-		{
-			return;
-		}
-
-		warn(format, new Object[] { arg }, null);
-	}
-
-	@Override
-	public void warn(final String format, final Object arg1, final Object arg2)
-	{
-		if (!isWarnEnabled())
-		{
-			return;
-		}
-
-		warn(format, new Object[] { arg1, arg2 }, null);
-	}
-
-	@Override
-	public void warn(final String format, final Object[] argArray)
-	{
-		if (!isWarnEnabled())
-		{
-			return;
-		}
-
-		warn(format, argArray, null);
-	}
-
-	@Override
-	public void warn(final String msg, final Throwable t)
-	{
-		if (!isWarnEnabled())
-		{
-			return;
-		}
-
-		warn(msg, null, t);
-	}
-
-	protected void warn(final String format, final Object[] argArray, final Throwable t)
-	{
-		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
-		AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.YELLOW) + "WARN " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
-		if (t != null)
-		{
-			t.printStackTrace(System.out);
-		}
-	}
-
-	@Override
 	public boolean isErrorEnabled()
 	{
 		return true;
-	}
-
-	@Override
-	public void error(final String msg)
-	{
-		if (!isErrorEnabled())
-		{
-			return;
-		}
-
-		error(msg, null, null);
-	}
-
-	@Override
-	public void error(final String format, final Object arg)
-	{
-		if (!isErrorEnabled())
-		{
-			return;
-		}
-
-		error(format, new Object[] { arg }, null);
-	}
-
-	@Override
-	public void error(final String format, final Object arg1, final Object arg2)
-	{
-		if (!isErrorEnabled())
-		{
-			return;
-		}
-
-		error(format, new Object[] { arg1, arg2 }, null);
-	}
-
-	@Override
-	public void error(final String format, final Object[] argArray)
-	{
-		if (!isErrorEnabled())
-		{
-			return;
-		}
-
-		error(format, argArray, null);
-	}
-
-	@Override
-	public void error(final String msg, final Throwable t)
-	{
-		if (!isErrorEnabled())
-		{
-			return;
-		}
-
-		error(msg, null, t);
-	}
-
-	protected void error(final String format, final Object[] argArray, final Throwable t)
-	{
-		final String message = argArray == null ? format : MessageFormatter.arrayFormat(format, argArray).getMessage();
-		AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.RED) + "ERROR" + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
-		if (t != null)
-		{
-			t.printStackTrace(System.out);
-		}
 	}
 
 	protected static String nowAsString()

@@ -22,7 +22,7 @@ public class Main
 	private static final int EXIT_CMDLINE_INVALID = 1;
 	private static final int EXIT_EXCEPTION = 2;
 
-	public static void main(String[] args) throws InterruptedException, IOException
+	public static void main(final String[] args) throws InterruptedException, IOException
 	{
 		final JCommander jCommander = JCommander.newBuilder().addObject(Settings.INSTANCE).build();
 		try
@@ -70,8 +70,6 @@ public class Main
 	{
 		LOGGER.debug("Application starting.");
 
-		killStupidJavaOSCDebugLogLine();
-
 		final Bus hub = new Bus();
 
 		final X32Endpoint x32Endpoint = new X32Endpoint(Settings.INSTANCE.getX32Host());
@@ -86,7 +84,7 @@ public class Main
 		final X32ToQLCPlusRouter x32ToQLCPlusRouter = new X32ToQLCPlusRouter();
 		hub.registerRouter(x32ToQLCPlusRouter);
 
-		LOGGER.debug("Application started.");
+		LOGGER.info("Application started.");
 		try
 		{
 			System.in.read();
@@ -96,15 +94,10 @@ public class Main
 			e.printStackTrace();
 		}
 
-		LOGGER.debug("Application stopping.");
+		LOGGER.info("Application stopping.");
 		hub.stop();
 
 		LOGGER.debug("Application stopped.");
-	}
-
-	private static void killStupidJavaOSCDebugLogLine()
-	{
-		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger("com.illposed.osc.argument.handler.Activator")).setLevel(ch.qos.logback.classic.Level.INFO);
 	}
 
 	private static String getCurrentExecutable()
