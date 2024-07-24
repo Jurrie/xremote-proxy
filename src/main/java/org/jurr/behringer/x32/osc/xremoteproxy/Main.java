@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus.QLCPlusEndpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.EmulatingX32Endpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.X32Endpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.X32ToQLCPlusRouter;
 import org.slf4j.Logger;
@@ -72,14 +71,8 @@ public class Main
 
 		final Bus hub = new Bus();
 
-		// TODO: Actually, we can merge X32 endpoint and emulating x32 endpoint. The X32's listed on startup get the /xremote command, the ones detected do not.
-		// We might even do --x32 1.2.3.4:123 --x32 2.3.4.5:345 --fake-x32 3.4.1.1:1234 etc..
-
-		final X32Endpoint x32Endpoint = new X32Endpoint(Settings.INSTANCE.getX32Addresses());
-		hub.registerEndpoint(x32Endpoint);
-
-		final EmulatingX32Endpoint emulatingX32Endpoint = new EmulatingX32Endpoint(Settings.INSTANCE.getX32ListenAddress());
-		hub.registerEndpoint(emulatingX32Endpoint);
+		final X32Endpoint newX32Endpoint = new X32Endpoint(Settings.INSTANCE.getX32ListenAddress(), Settings.INSTANCE.getX32Addresses(), Settings.INSTANCE.getFakeX32Addresses());
+		hub.registerEndpoint(newX32Endpoint);
 
 		final QLCPlusEndpoint qlcPlusEndpoint = new QLCPlusEndpoint(Settings.INSTANCE.getQLCPlusListenAddress(), Settings.INSTANCE.getQLCPlusAddresses());
 		hub.registerEndpoint(qlcPlusEndpoint);

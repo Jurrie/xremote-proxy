@@ -16,6 +16,11 @@ public abstract class AbstractRouter implements BusManaged
 
 	private Bus bus;
 
+	public enum ReceiveResult
+	{
+		DID_NOT_HANDLE, HANDLED_STOP_ROUTING, HANDLED_CONTINUE_ROUTING
+	}
+
 	@Override
 	public void start(final Bus bus)
 	{
@@ -47,7 +52,7 @@ public abstract class AbstractRouter implements BusManaged
 	{
 	}
 
-	public abstract void onMessageReceived(AbstractEndpoint<?> source, AbstractOSCMessage message);
+	public abstract ReceiveResult onMessageReceived(AbstractEndpoint<?> source, AbstractOSCMessage message);
 
 	protected <T extends AbstractOSCMessage> void send(final AbstractEndpoint<T> endpoint, final T command)
 	{

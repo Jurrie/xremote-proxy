@@ -205,7 +205,7 @@ public class MultiClientUDPTransport implements Transport
 				final SocketAddress clientAddress = underlyingChannel.receive(recvBuffer);
 				if (!remotes.contains(clientAddress))
 				{
-					LOGGER.debug("New client detected on {}:{}. Client {} has sent us its first message.", local.getAddress().getCanonicalHostName(), local.getPort(), clientAddress);
+					LOGGER.info("New client detected on {}:{}. Client {} has sent us its first message.", local.getAddress().getCanonicalHostName(), local.getPort(), clientAddress);
 					remotes.add((InetSocketAddress) clientAddress);
 				}
 

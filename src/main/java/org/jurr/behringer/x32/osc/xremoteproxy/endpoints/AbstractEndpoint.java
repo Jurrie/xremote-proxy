@@ -42,7 +42,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 			{
 			case MultiClientUDPTransport mcUDPTransport -> {
 				final String remotes = mcUDPTransport.getRemotes().stream().map(r -> r.getAddress().getCanonicalHostName() + ":" + r.getPort()).reduce((a, b) -> a + ", " + b).map(r -> r + " and ").orElse("");
-				LOGGER.debug("Endpoint {} started listening on port {} (sending to {}all clients that send to us first)", getName(), mcUDPTransport.getLocal().getPort(), remotes);
+				LOGGER.debug("{} started listening on port {} (sending to {}all clients that send us a message first)", getName(), mcUDPTransport.getLocal().getPort(), remotes);
 			}
 			default -> LOGGER.debug("Endpoint {} started listening", getName());
 			}
@@ -72,7 +72,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 	@Override
 	public void signalStop() throws IOException
 	{
-		LOGGER.debug("Endpoint {} stopping.", getName());
+		LOGGER.debug("{} stopping.", getName());
 		running = false;
 		transport.close();
 		thread.interrupt();
@@ -82,7 +82,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 	public void waitUntilStopped() throws InterruptedException
 	{
 		thread.join();
-		LOGGER.debug("Endpoint {} stopped.", getName());
+		LOGGER.debug("{} stopped.", getName());
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 	public void waitUntilStopped(final long millis, final int nanos) throws InterruptedException
 	{
 		thread.join(millis, nanos);
-		LOGGER.debug("Endpoint {} stopped.", getName());
+		LOGGER.debug("{} stopped.", getName());
 	}
 
 	public void send(T message) throws IOException

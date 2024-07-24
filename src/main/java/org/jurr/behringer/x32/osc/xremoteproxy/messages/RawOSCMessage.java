@@ -1,5 +1,7 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages;
 
+import com.illposed.osc.OSCBundle;
+import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 
@@ -22,6 +24,17 @@ public class RawOSCMessage extends AbstractOSCMessage
 	@Override
 	public OSCPacket toOSCPacket()
 	{
-		throw new UnsupportedOperationException("Not implemented.");
+		return oscPacket;
+	}
+
+	@Override
+	public String toString()
+	{
+		return switch (oscPacket)
+		{
+		case OSCMessage rawOSCMsg -> "RawOSCMessage [oscMessage address=" + rawOSCMsg.getAddress() + "]";
+		case OSCBundle rawOSCBundle -> "RawOSCMessage [oscBundle timestamp=" + rawOSCBundle.getTimestamp() + "]";
+		default -> "RawOSCMessage [oscPacket=" + oscPacket + "]";
+		};
 	}
 }

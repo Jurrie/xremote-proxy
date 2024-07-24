@@ -1,6 +1,7 @@
 package org.jurr.behringer.x32.osc.xremoteproxy;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
 import java.util.List;
 
 import com.beust.jcommander.IStringConverter;
@@ -27,10 +28,13 @@ public final class Settings
 	private boolean traceOutput = false;
 
 	@Parameter(names = { "--x32" }, description = "Hostname (or IP address) and port where the X32 lives. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". While typically you'ld only have one X32, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = X32InetSocketAddressConverter.class)
-	private List<InetSocketAddress> x32Address;
+	private List<InetSocketAddress> x32Addresses;
+
+	@Parameter(names = { "--fake-x32" }, description = "Hostname (or IP address) and port where fake X32 servers live. A \"fake X32\" is a OSC endpoint that accepts X32 messages, but to which we not send /xremote commands. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". This option can be used multiple times, and also accepts a comma-separated list.", converter = X32InetSocketAddressConverter.class)
+	private List<InetSocketAddress> fakeX32Address = Collections.emptyList();
 
 	@Parameter(names = { "--qlcplus" }, description = "Hostname (or IP address) and port where QLC+ lives. Format is \"host:port\" and default port is " + QLCPlusEndpoint.DEFAULT_SEND_PORT + ". While typically you'ld only have one QLC+ instance, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = QLCPlusInetSocketAddressConverter.class)
-	private List<InetSocketAddress> qlcPlusAddress;
+	private List<InetSocketAddress> qlcPlusAddresses;
 
 	@Parameter(names = { "--qlcplus-listen" }, description = "Hostname (or IP address) and port to listen on for QLC+ messages. Format is \"host:port\" and default is 0.0.0.0:" + QLCPlusEndpoint.DEFAULT_RECEIVE_PORT + ".", converter = QLCPlusListenInetSocketAddressConverter.class)
 	private InetSocketAddress qlcPlusListenAddress = new InetSocketAddress(QLCPlusEndpoint.DEFAULT_RECEIVE_PORT);
@@ -55,12 +59,17 @@ public final class Settings
 
 	public List<InetSocketAddress> getX32Addresses()
 	{
-		return x32Address;
+		return x32Addresses;
+	}
+
+	public List<InetSocketAddress> getFakeX32Addresses()
+	{
+		return fakeX32Address;
 	}
 
 	public List<InetSocketAddress> getQLCPlusAddresses()
 	{
-		return qlcPlusAddress;
+		return qlcPlusAddresses;
 	}
 
 	public InetSocketAddress getQLCPlusListenAddress()

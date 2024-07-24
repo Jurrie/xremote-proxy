@@ -8,6 +8,7 @@ import java.util.List;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter;
+import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter.ReceiveResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,11 +74,26 @@ public class Bus
 
 	public void messageReceived(final AbstractEndpoint<?> source, final AbstractOSCMessage message)
 	{
-		LOGGER.debug("Received message: {}.", message);
+		LOGGER.debug("Received message {} from {}.", message, source.getName());
+		boolean messageWasHandledAtLeastOnce = false;
 
 		for (AbstractRouter router : routers)
 		{
-			router.onMessageReceived(source, message);
+			final ReceiveResult result = router.onMessageReceived(source, message);
+			if (result != ReceiveResult.DID_NOT_HANDLE)
+			{
+				messageWasHandledAtLeastOnce = true;
+			}
+
+			if (result == ReceiveResult.HANDLED_STOP_ROUTING)
+			{
+				break;
+			}
+		}
+
+		if (!messageWasHandledAtLeastOnce)
+		{
+			LOGGER.info("Recieved message {} from {} but no router handled it.", message, source.getName());
 		}
 	}
 }
