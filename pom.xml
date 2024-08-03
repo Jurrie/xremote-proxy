@@ -5,6 +5,33 @@
 	<artifactId>xremote-proxy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<name>xremote-proxy</name>
+	<description>A simple program intended to convert OSC messages between X32 and QLC+. Though probably it can be extended for your own needs.</description>
+	<url>https://github.com/Jurrie/xremote-proxy</url>
+
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Jurrie Overgoor</name>
+			<email>github@jurr.org</email>
+			<url>https://github.com/Jurrie</url>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:Jurrie/xremote-proxy.git</connection>
+		<developerConnection>scm:git:git@github.com:Jurrie/xremote-proxy.git</developerConnection>
+		<url>https://github.com/Jurrie/xremote-proxy/tree/master</url>
+		<tag>HEAD</tag>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>21</maven.compiler.source>
@@ -203,6 +230,8 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+					<finalName>${project.build.finalName}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
 					<execution>

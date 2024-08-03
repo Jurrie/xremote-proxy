@@ -1,0 +1,1 @@
+To install this input profile, please copy it to ~/.qlcplus/inputprofiles/ and restart QLC+.

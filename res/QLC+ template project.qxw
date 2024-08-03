@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Workspace>
+<Workspace xmlns="http://www.qlcplus.org/Workspace" CurrentWindow="VirtualConsole">
+ <Creator>
+  <Name>Q Light Controller Plus</Name>
+  <Version>4.13.1</Version>
+  <Author>Jurrie Overgoor</Author>
+ </Creator>
+ <Engine>
+  <InputOutputMap>
+   <BeatGenerator BeatType="Disabled" BPM="0"/>
+   <Universe Name="X32 demo" ID="0">
+    <Input Plugin="OSC" UID="192.168.0.61" Line="10" Profile="Jurrie Overgoor Behringer X32 via xremote-proxy"/>
+    <Feedback Plugin="OSC" UID="192.168.0.61" Line="10">
+     <PluginParameters feedbackIP="192.168.0.61" outputIP="192.168.0.61"/>
+    </Feedback>
+   </Universe>
+  </InputOutputMap>
+  <Function ID="0" Type="Script" Name="Dummy script for C12">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="1" Type="Script" Name="Dummy script for C5">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="2" Type="Script" Name="Dummy script for C6">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="3" Type="Script" Name="Dummy script for C7">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="4" Type="Script" Name="Dummy script for C8">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="5" Type="Script" Name="Dummy script for C11">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="6" Type="Script" Name="Dummy script for C10">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="7" Type="Script" Name="Dummy script for C9">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="8" Type="Script" Name="Dummy script for B10">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="9" Type="Script" Name="Dummy script for B11">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="10" Type="Script" Name="Dummy script for B12">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="11" Type="Script" Name="Dummy script for B5">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="12" Type="Script" Name="Dummy script for B6">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="13" Type="Script" Name="Dummy script for B7">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="14" Type="Script" Name="Dummy script for B8">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="15" Type="Script" Name="Dummy script for B9">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="16" Type="Script" Name="Dummy script for A10">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="17" Type="Script" Name="Dummy script for A11">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="18" Type="Script" Name="Dummy script for A12">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="19" Type="Script" Name="Dummy script for A5">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="20" Type="Script" Name="Dummy script for A6">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="21" Type="Script" Name="Dummy script for A7">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="22" Type="Script" Name="Dummy script for A8">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Function ID="23" Type="Script" Name="Dummy script for A9">
+   <Speed FadeIn="0" FadeOut="0" Duration="0"/>
+   <Direction>Forward</Direction>
+   <RunOrder>Loop</RunOrder>
+  </Function>
+  <Monitor DisplayMode="1" ShowLabels="1">
+   <Font>Arial,12,-1,5,50,0,0,0,0,0</Font>
+   <ChannelStyle>0</ChannelStyle>
+   <ValueStyle>0</ValueStyle>
+   <Grid Width="6" Height="3" Depth="1" Units="0"/>
+  </Monitor>
+ </Engine>
+ <VirtualConsole>
+  <Frame Caption="">
+   <Appearance>
+    <FrameStyle>None</FrameStyle>
+    <ForegroundColor>Default</ForegroundColor>
+    <BackgroundColor>Default</BackgroundColor>
+    <BackgroundImage>None</BackgroundImage>
+    <Font>Default</Font>
+   </Appearance>
+   <Frame Caption="X32 user assignable" ID="0">
+    <Appearance>
+     <FrameStyle>Sunken</FrameStyle>
+     <ForegroundColor>4294967295</ForegroundColor>
+     <BackgroundColor>Default</BackgroundColor>
+     <BackgroundImage>None</BackgroundImage>
+     <Font>Default</Font>
+    </Appearance>
+    <WindowState Visible="True" X="10" Y="10" Width="430" Height="345"/>
+    <AllowChildren>True</AllowChildren>
+    <AllowResize>False</AllowResize>
+    <ShowHeader>True</ShowHeader>
+    <ShowEnableButton>False</ShowEnableButton>
+    <Collapsed>False</Collapsed>
+    <Disabled>False</Disabled>
+    <Multipage PagesNum="3" CurrentPage="0"/>
+    <Shortcut Page="0" Name="Bank A"/>
+    <Shortcut Page="1" Name="Bank B"/>
+    <Shortcut Page="2" Name="Bank C"/>
+    <PagesLoop>False</PagesLoop>
+    <Button Caption="Button C9" ID="1" Page="2" Icon="">
+     <WindowState Visible="False" X="10" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="7"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="152830"/>
+    </Button>
+    <Button Caption="Button C8" ID="2" Page="2" Icon="">
+     <WindowState Visible="False" X="325" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="4"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="183083"/>
+    </Button>
+    <Button Caption="Button C7" ID="3" Page="2" Icon="">
+     <WindowState Visible="False" X="220" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="3"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="185055"/>
+    </Button>
+    <Button Caption="Button C10" ID="4" Page="2" Icon="">
+     <WindowState Visible="False" X="115" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="6"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="179692"/>
+    </Button>
+    <Button Caption="Button C6" ID="5" Page="2" Icon="">
+     <WindowState Visible="False" X="115" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="2"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="150794"/>
+    </Button>
+    <Button Caption="Button C5" ID="6" Page="2" Icon="">
+     <WindowState Visible="False" X="10" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="1"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="189796"/>
+    </Button>
+    <Slider Caption="Enc C1" ID="7" Page="2" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="10" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="134990"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="22"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc C2" ID="8" Page="2" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="115" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="173856"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="12"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc C3" ID="9" Page="2" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="220" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="145653"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="86"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc C4" ID="10" Page="2" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="325" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="196589"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="16"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Button Caption="Button C11" ID="11" Page="2" Icon="">
+     <WindowState Visible="False" X="220" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="5"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="139833"/>
+    </Button>
+    <Button Caption="Button C12" ID="12" Page="2" Icon="">
+     <WindowState Visible="False" X="325" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4288266737</ForegroundColor>
+      <BackgroundColor>4279918516</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="0"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="166487"/>
+    </Button>
+    <Button Caption="Button B5" ID="13" Page="1" Icon="">
+     <WindowState Visible="False" X="10" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="11"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="91355"/>
+    </Button>
+    <Slider Caption="Enc B1" ID="14" Page="1" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="10" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="102129"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="20"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc B2" ID="15" Page="1" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="115" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="75423"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="22"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Button Caption="Button B6" ID="16" Page="1" Icon="">
+     <WindowState Visible="False" X="115" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="12"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="117941"/>
+    </Button>
+    <Button Caption="Button B9" ID="17" Page="1" Icon="">
+     <WindowState Visible="False" X="10" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="15"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="120129"/>
+    </Button>
+    <Button Caption="Button B10" ID="18" Page="1" Icon="">
+     <WindowState Visible="False" X="115" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="8"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="126993"/>
+    </Button>
+    <Button Caption="Button B11" ID="19" Page="1" Icon="">
+     <WindowState Visible="False" X="220" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="9"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="94148"/>
+    </Button>
+    <Button Caption="Button B7" ID="20" Page="1" Icon="">
+     <WindowState Visible="False" X="220" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="13"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="86880"/>
+    </Button>
+    <Slider Caption="Enc B3" ID="21" Page="1" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="220" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="112970"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="221"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc B4" ID="22" Page="1" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="False" X="325" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="97874"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="167"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Button Caption="Button B8" ID="23" Page="1" Icon="">
+     <WindowState Visible="False" X="325" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="14"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="84628"/>
+    </Button>
+    <Button Caption="Button B12" ID="24" Page="1" Icon="">
+     <WindowState Visible="False" X="325" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4287623332</ForegroundColor>
+      <BackgroundColor>4280722025</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="10"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="116650"/>
+    </Button>
+    <Button Caption="Button A5" ID="25" Icon="">
+     <WindowState Visible="True" X="10" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="19"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="60939"/>
+    </Button>
+    <Button Caption="Button A9" ID="26" Icon="">
+     <WindowState Visible="True" X="10" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="23"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="24465"/>
+    </Button>
+    <Slider Caption="Enc A1" ID="27" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="True" X="10" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="1057"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="179"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc A2" ID="28" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="True" X="115" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="44111"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="197"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc A3" ID="29" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="True" X="220" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="13210"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="196"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Slider Caption="Enc A4" ID="30" WidgetStyle="Knob" InvertedAppearance="false">
+     <WindowState Visible="True" X="325" Y="45" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>Sunken</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Default</Font>
+     </Appearance>
+     <Input Universe="0" Channel="62594"/>
+     <SliderMode ValueDisplayStyle="Exact" ClickAndGoType="None" Monitor="false">Level</SliderMode>
+     <Level LowLimit="0" HighLimit="255" Value="195"/>
+     <Playback>
+      <Function>4294967295</Function>
+     </Playback>
+    </Slider>
+    <Button Caption="Button A6" ID="31" Icon="">
+     <WindowState Visible="True" X="115" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="20"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="18021"/>
+    </Button>
+    <Button Caption="Button A10" ID="32" Icon="">
+     <WindowState Visible="True" X="115" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="16"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="9750"/>
+    </Button>
+    <Button Caption="Button A11" ID="33" Icon="">
+     <WindowState Visible="True" X="220" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="17"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="47555"/>
+    </Button>
+    <Button Caption="Button A7" ID="34" Icon="">
+     <WindowState Visible="True" X="220" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="21"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="55728"/>
+    </Button>
+    <Button Caption="Button A8" ID="35" Icon="">
+     <WindowState Visible="True" X="325" Y="145" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="22"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="49220"/>
+    </Button>
+    <Button Caption="Button A12" ID="36" Icon="">
+     <WindowState Visible="True" X="325" Y="245" Width="95" Height="90"/>
+     <Appearance>
+      <FrameStyle>None</FrameStyle>
+      <ForegroundColor>4294336849</ForegroundColor>
+      <BackgroundColor>4289010989</BackgroundColor>
+      <BackgroundImage>None</BackgroundImage>
+      <Font>Ubuntu,15,-1,5,75,0,0,0,0,0</Font>
+     </Appearance>
+     <Function ID="18"/>
+     <Action Override="1" ForceLTP="0">Flash</Action>
+     <Intensity Adjust="False">100</Intensity>
+     <Input Universe="0" Channel="4525"/>
+    </Button>
+   </Frame>
+  </Frame>
+  <Properties>
+   <Size Width="450" Height="365"/>
+   <GrandMaster ChannelMode="Intensity" ValueMode="Reduce" SliderMode="Normal"/>
+  </Properties>
+ </VirtualConsole>
+ <SimpleDesk>
+  <Engine/>
+ </SimpleDesk>
+</Workspace>

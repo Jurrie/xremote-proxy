@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE InputProfile>
+<InputProfile xmlns="http://www.qlcplus.org/InputProfile">
+ <Creator>
+  <Name>Q Light Controller Plus</Name>
+  <Version>4.13.1</Version>
+  <Author>Jurrie Overgoor</Author>
+ </Creator>
+ <Manufacturer>Jurrie Overgoor</Manufacturer>
+ <Model>Behringer X32 via xremote-proxy</Model>
+ <Type>OSC</Type>
+ <Channel Number="1057">
+  <Name>/encoder/A1/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="3918">
+  <Name>/encoder/C1/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="4525">
+  <Name>/button/A12/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="8761">
+  <Name>/button/C11/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="9750">
+  <Name>/button/A10/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="9887">
+  <Name>/encoder/B2/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="13210">
+  <Name>/encoder/A3/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="14581">
+  <Name>/encoder/C3/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="18021">
+  <Name>/button/A6/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="19092">
+  <Name>/button/B8/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="19722">
+  <Name>/button/C6/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="21344">
+  <Name>/button/B7/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="21758">
+  <Name>/button/C9/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="24465">
+  <Name>/button/A9/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="25819">
+  <Name>/button/B5/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="28612">
+  <Name>/button/B11/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="32338">
+  <Name>/encoder/B4/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="35415">
+  <Name>/button/C12/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="36593">
+  <Name>/encoder/B1/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="42784">
+  <Name>/encoder/C2/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="44111">
+  <Name>/encoder/A2/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="47434">
+  <Name>/encoder/B3/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="47555">
+  <Name>/button/A11/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="48620">
+  <Name>/button/C10/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="49220">
+  <Name>/button/A8/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="51114">
+  <Name>/button/B12/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="52011">
+  <Name>/button/C8/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="52405">
+  <Name>/button/B6/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="53983">
+  <Name>/button/C7/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="54593">
+  <Name>/button/B9/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="55728">
+  <Name>/button/A7/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="58724">
+  <Name>/button/C5/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="60939">
+  <Name>/button/A5/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="61457">
+  <Name>/button/B10/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="62594">
+  <Name>/encoder/A4/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+ <Channel Number="65517">
+  <Name>/encoder/C4/value</Name>
+  <Type>Knob</Type>
+ </Channel>
+</InputProfile>
