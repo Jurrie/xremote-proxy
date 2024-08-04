@@ -16,13 +16,21 @@ import org.slf4j.LoggerFactory;
 
 public class Main
 {
+	static
+	{
+		// Silence SLF4J internal info logging. This is in a static block because it needs to be done before any SLF4J logger is created.
+		System.setProperty(org.slf4j.helpers.Reporter.SLF4J_INTERNAL_VERBOSITY_KEY, "WARN");
+	}
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final int EXIT_OK = 0;
 	private static final int EXIT_CMDLINE_INVALID = 1;
 	private static final int EXIT_EXCEPTION = 2;
 
-	public static void main(final String[] args) throws InterruptedException, IOException
+	public static void main(final String... args) throws InterruptedException, IOException
 	{
+		LOGGER.info("xremote-proxy version {} ({})", XRemoteProxy.getVersion(), XRemoteProxy.getBuildNumber());
+
 		final JCommander jCommander = JCommander.newBuilder().addObject(Settings.INSTANCE).build();
 		try
 		{
