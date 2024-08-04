@@ -3,7 +3,7 @@
 
 	<groupId>org.jurr.behringer.x32.osc.proxy</groupId>
 	<artifactId>xremote-proxy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 
 	<name>xremote-proxy</name>
 	<description>A simple program intended to convert OSC messages between X32 and QLC+. Though probably it can be extended for your own needs.</description>
@@ -29,7 +29,7 @@
 		<connection>scm:git:git@github.com:Jurrie/xremote-proxy.git</connection>
 		<developerConnection>scm:git:git@github.com:Jurrie/xremote-proxy.git</developerConnection>
 		<url>https://github.com/Jurrie/xremote-proxy/tree/master</url>
-		<tag>HEAD</tag>
+		<tag>xremote-proxy-0.0.1</tag>
 	</scm>
 
 	<properties>
