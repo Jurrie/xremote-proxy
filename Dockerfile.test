@@ -1,0 +1,16 @@
+# Use this file to test the Debian package created by JPackage
+#
+# podman build  -f Dockerfile.test -t xremote-proxy .
+# podman run --rm -it --name xremote-proxy xremote-proxy
+#
+# You can login as root with password 'xremote-proxy'
+
+FROM debian:stable
+
+RUN apt update && apt install -y systemd-sysv && apt clean && echo 'root:xremote-proxy' | chpasswd
+
+COPY target/xremote-proxy*deb /
+
+RUN apt install /xremote-proxy*.deb; systemctl enable xremote-proxy
+
+CMD [ "/sbin/init" ]

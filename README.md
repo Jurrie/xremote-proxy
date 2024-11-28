@@ -26,13 +26,13 @@ I also use TouchOSC which emulates X32 "Button press" OSC messages.
 The end result is:
 - pressing a button on the X32 will trigger a button in QLC+ and will light up the button in TouchOSC;
 - pressing a button in QLC+ will light up the user assignable button on the X32 and will light up the button in TouchOSC;
-- pressing a button in TouchOSC will trigger a button in QCL+ and will light up the user assignable button on the X32
+- pressing a button in TouchOSC will trigger a button in QLC+ and will light up the user assignable button on the X32
 
 ## Usage
 
 Start the application by running it from a command line. (It requires Java 21+.)
 
-`java -jar ./target/xremote-proxy-0.0.1.jar` (update the version number when applicable)
+`java -jar ./target/xremote-proxy-<version>.jar` (update the version number when applicable)
 
 You'll see an error message explaining that you should give some mandatory parameters. Give them, and run again.
 
@@ -95,6 +95,19 @@ This is a project for [TouchOSC](https://hexler.net/touchosc) that will emulate 
 ### TouchOSC emulating QLC+.tosc
 
 This is a project for [TouchOSC](https://hexler.net/touchosc) that will emulate QLC+ sending OSC messages using the `QLC+ input profile` profile. You can use this project in combination with the `--qlcplus` command line argument of `xremote-proxy`.
+
+# Debian packages
+
+Debian packages for AMD64 and ARM64 (which is the architecture of Raspberry Pi for example) are provided. You install these packages like normal: `apt install xremote-proxy-<version>.deb`.
+A Systemd service is created. But be advised that the default command to start `xremote-proxy` will not suffice. You'll need to specify your own command. To do this, do a `systemctl edit xremote-proxy.service` and give the following lines:
+
+```
+[Service]
+ExecStart=
+ExecStart=/opt/xremote-proxy/bin/xremote-proxy --x32 <your-x32-ip-here> --qlcplus <your-qlc+-ip-here> <other-arguments-here>
+```
+
+This will create the file `/etc/systemd/system/xremote-proxy.service.d/override.conf` which will override the defaults of the Systemd service. Then do a `systemctl daemon-reload` and start the service with `systemctl start xremote-proxy`. If things go wrong please check the output of `systemctl status xremote-proxy.service` and `journalctl -u xremote-proxy.service`. If you want the service to start at boot, do a `systemctl enable xremote-proxy`.
 
 # Legal stuff
 

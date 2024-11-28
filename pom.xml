@@ -20,7 +20,7 @@
 	<developers>
 		<developer>
 			<name>Jurrie Overgoor</name>
-			<email>github@jurr.org</email>
+			<email>xremote-proxy@jurr.org</email>
 			<url>https://github.com/Jurrie</url>
 		</developer>
 	</developers>
@@ -139,6 +139,12 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jlink-plugin</artifactId>
+					<version>3.2.0</version>
+					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.13.0</version>
 				</plugin>
@@ -236,6 +242,16 @@
 					<artifactId>buildnumber-maven-plugin</artifactId>
 					<version>3.2.0</version>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.6.0</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -278,6 +294,9 @@
 								<requireMavenVersion>
 									<version>3.6.3</version>
 								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>21</version>
+								</requireJavaVersion>
 							</rules>
 						</configuration>
 					</execution>
@@ -350,6 +369,84 @@
 						<goals>
 							<goal>single</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-docker-file</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}/</outputDirectory>
+							<resources>
+								<resources>
+									<directory>${project.basedir}</directory>
+									<includes>
+										<include>Dockerfile</include>
+									</includes>
+									<filtering>true</filtering>
+								</resources>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-deb-packages</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<!-- This requires a "sudo apt install podman qemu-user-static" first -->
+							<executable>podman</executable>
+							<arguments>
+								<argument>build</argument>
+								<argument>.</argument>
+								<argument>--file</argument>
+								<argument>${project.build.directory}/Dockerfile</argument>
+								<argument>--output</argument>
+								<argument>type=local,dest=${project.build.directory}/</argument>
+							</arguments>
+							<useMavenLogger>true</useMavenLogger>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-deb-packages-as-artifact</id>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>${project.build.directory}/${project.name}_${project.version}_amd64.deb</file>
+									<type>deb</type>
+									<classifier>amd64</classifier>
+								</artifact>
+								<artifact>
+									<file>${project.build.directory}/${project.name}_${project.version}_arm64.deb</file>
+									<type>deb</type>
+									<classifier>arm64</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

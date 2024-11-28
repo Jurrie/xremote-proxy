@@ -42,6 +42,9 @@ public final class Settings
 	@Parameter(names = { "--x32-listen" }, description = "Hostname (or IP address) and port to listen on for messages of X32 clients. Format is \"host:port\" and default is 0.0.0.0:" + X32Endpoint.X32_PORT + ".", converter = X32InetSocketAddressConverter.class)
 	private InetSocketAddress x32ListenAddress = new InetSocketAddress(X32Endpoint.X32_PORT);
 
+	@Parameter(names = { "--run-in-foreground", "--foreground", "-f" }, description = "Run in foreground (wait for ENTER key and then stop)")
+	private boolean runInForeground = false;
+
 	public boolean isHelp()
 	{
 		return help;
@@ -80,6 +83,11 @@ public final class Settings
 	public InetSocketAddress getX32ListenAddress()
 	{
 		return x32ListenAddress;
+	}
+
+	public boolean isRunInForeground()
+	{
+		return runInForeground;
 	}
 
 	private abstract static class InetSocketAddressConverter implements IStringConverter<InetSocketAddress>

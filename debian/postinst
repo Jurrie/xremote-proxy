@@ -1,0 +1,60 @@
+#!/bin/sh
+# postinst script for xremote-proxy
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see https://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+package_type=deb
+
+
+case "$1" in
+	configure)
+	;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+	;;
+esac
+
+# This part is based on what is normally automatically added by dh_installsystemd
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	# Move the systemd unit file to the correct position. JPackage doesn't seem to have a way to get this unit file in the correct place inside the .deb, so we must move it here.
+	mv /opt/xremote-proxy/lib/app/xremote-proxy.service /lib/systemd/system/
+
+	# This will only remove masks created by d-s-h on package removal.
+	deb-systemd-helper unmask 'xremote-proxy.service' >/dev/null || true
+
+	# was-enabled defaults to true, so new installations run enable.
+	if deb-systemd-helper --quiet was-enabled 'xremote-proxy.service'; then
+		# Enables the unit on first installation, creates new symlinks on upgrades if the unit file has changed.
+		deb-systemd-helper enable 'xremote-proxy.service' >/dev/null || true
+	else
+		# Update the statefile to add new symlinks (if any), which need to be cleaned up on purge. Also remove old symlinks.
+		deb-systemd-helper update-state 'xremote-proxy.service' >/dev/null || true
+	fi
+
+	if [ -z "${DPKG_ROOT:-}" ] && [ -d /run/systemd/system ]; then
+		systemctl --system daemon-reload >/dev/null || true
+		deb-systemd-invoke start 'xremote-proxy.service' >/dev/null || true
+	fi
+fi
+# End automatically added section
+
+exit 0

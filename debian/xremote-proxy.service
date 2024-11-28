@@ -1,0 +1,10 @@
+[Unit]
+Description=xremote-proxy
+After=network.target
+
+[Service]
+ExecStart=/opt/xremote-proxy/bin/xremote-proxy
+WorkingDirectory=/opt/xremote-proxy
+
+[Install]
+WantedBy=multi-user.target

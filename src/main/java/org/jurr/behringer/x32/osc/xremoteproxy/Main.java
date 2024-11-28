@@ -89,19 +89,23 @@ public class Main
 		hub.registerRouter(x32ToQLCPlusRouter);
 
 		LOGGER.info("Application started.");
-		try
-		{
-			System.in.read();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 
-		LOGGER.info("Application stopping.");
-		hub.stop();
+		if (Settings.INSTANCE.isRunInForeground())
+		{
+			try
+			{
+				System.in.read();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 
-		LOGGER.debug("Application stopped.");
+			LOGGER.info("Application stopping.");
+			hub.stop();
+
+			LOGGER.debug("Application stopped.");
+		}
 	}
 
 	private static String getCurrentExecutable()
