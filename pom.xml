@@ -186,6 +186,7 @@
 					<artifactId>dependency-check-maven</artifactId>
 					<version>10.0.3</version>
 					<configuration>
+						<nvdApiServerId>nvd-api-key</nvdApiServerId>
 						<retireJsForceUpdate>true</retireJsForceUpdate>
 						<failBuildOnCVSS>4</failBuildOnCVSS>
 						<skipProvidedScope>true</skipProvidedScope>
