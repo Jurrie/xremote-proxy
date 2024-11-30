@@ -437,12 +437,12 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>${project.build.directory}/${project.name}_${project.version}_amd64.deb</file>
+									<file>${project.build.directory}/${project.artifactId}_${project.version}_amd64.deb</file>
 									<type>deb</type>
 									<classifier>amd64</classifier>
 								</artifact>
 								<artifact>
-									<file>${project.build.directory}/${project.name}_${project.version}_arm64.deb</file>
+									<file>${project.build.directory}/${project.artifactId}_${project.version}_arm64.deb</file>
 									<type>deb</type>
 									<classifier>arm64</classifier>
 								</artifact>
@@ -507,6 +507,10 @@
 											<includes>
 												<include>${project.artifactId}-${project.version}.jar</include>
 												<include>${project.artifactId}-${project.version}.jar.asc</include>
+												<include>${project.artifactId}_${project.version}_amd64.deb</include>
+												<include>${project.artifactId}_${project.version}_amd64.deb.asc</include>
+												<include>${project.artifactId}_${project.version}_arm64.deb</include>
+												<include>${project.artifactId}_${project.version}_arm64.deb.asc</include>
 											</includes>
 										</fileSet>
 									</fileSets>
