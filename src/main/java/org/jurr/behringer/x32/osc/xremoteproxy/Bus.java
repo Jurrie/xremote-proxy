@@ -93,7 +93,7 @@ public class Bus
 
 		if (!messageWasHandledAtLeastOnce)
 		{
-			LOGGER.info("Recieved message {} from {} but no router handled it.", message, source.getName());
+			LOGGER.debug("Recieved message {} from {} but no router handled it.", message, source.getName());
 		}
 	}
 }
