@@ -82,6 +82,13 @@ public class X32Endpoint extends AbstractEndpoint<AbstractX32OSCMessage>
 					LOGGER.error("Error parsing OSC data from X32.", e);
 				}
 			}
+			catch (Exception e)
+			{
+				if (isRunning())
+				{
+					LOGGER.error("Unknown error in X32 endpoint.", e);
+				}
+			}
 		}
 	}
 

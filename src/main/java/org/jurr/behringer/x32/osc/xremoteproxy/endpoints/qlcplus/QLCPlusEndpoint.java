@@ -62,6 +62,13 @@ public class QLCPlusEndpoint extends AbstractEndpoint<AbstractQLCPlusOSCMessage>
 					LOGGER.error("Error parsing OSC data from QLC+.", e);
 				}
 			}
+			catch (Exception e)
+			{
+				if (isRunning())
+				{
+					LOGGER.error("Unknown error in QLC+ endpoint.", e);
+				}
+			}
 		}
 	}
 }

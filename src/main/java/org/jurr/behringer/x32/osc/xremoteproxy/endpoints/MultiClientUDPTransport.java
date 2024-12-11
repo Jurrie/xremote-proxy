@@ -221,6 +221,10 @@ public class MultiClientUDPTransport implements Transport
 				}
 				recvBuffer.flip();
 			}
+			catch (Exception e)
+			{
+				throw new OSCParseException("Unknown error receiving packet", recvBuffer);
+			}
 			finally
 			{
 				end(completed);
