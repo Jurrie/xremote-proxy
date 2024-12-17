@@ -323,7 +323,7 @@ public class MultiClientUDPTransport implements Transport
 				sendBuffer.flip();
 				for (final SocketAddress remoteAddress : remoteAddresses)
 				{
-					LOGGER.trace("Sending to {}", remoteAddress.toString());
+					LOGGER.trace("Sending to {}", remoteAddress);
 					sendBuffer.rewind();
 					underlyingChannel.send(sendBuffer, remoteAddress);
 				}
