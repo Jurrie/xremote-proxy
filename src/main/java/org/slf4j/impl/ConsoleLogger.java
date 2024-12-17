@@ -37,19 +37,19 @@ public class ConsoleLogger extends LegacyAbstractLogger
 		switch (level)
 		{
 		case TRACE:
-			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "TRACE" + ": " + message + Ansi.ansi().reset());
+			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + currentThreadAsString() + " " + "TRACE" + ": " + message + Ansi.ansi().reset());
 			break;
 		case DEBUG:
-			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + "DEBUG" + ": " + message + Ansi.ansi().reset());
+			AnsiConsole.out().println(Ansi.ansi().fg(Color.WHITE) + nowAsString() + " " + currentThreadAsString() + " " + "DEBUG" + ": " + message + Ansi.ansi().reset());
 			break;
 		case INFO:
-			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.WHITE) + "INFO " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			AnsiConsole.out().println(nowAsString() + " " + currentThreadAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.WHITE) + "INFO " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
 			break;
 		case WARN:
-			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.YELLOW) + "WARN " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			AnsiConsole.out().println(nowAsString() + " " + currentThreadAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.YELLOW) + "WARN " + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
 			break;
 		case ERROR:
-			AnsiConsole.out().println(nowAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.RED) + "ERROR" + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
+			AnsiConsole.out().println(nowAsString() + " " + currentThreadAsString() + " " + Ansi.ansi().bold() + Ansi.ansi().fgBright(Color.RED) + "ERROR" + Ansi.ansi().boldOff() + ": " + message + Ansi.ansi().reset());
 			break;
 		}
 		if (t != null)
@@ -101,5 +101,10 @@ public class ConsoleLogger extends LegacyAbstractLogger
 			dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss:SSSS");
 		}
 		return dateTimeFormatter.format(LocalDateTime.now());
+	}
+
+	protected static String currentThreadAsString()
+	{
+		return Thread.currentThread().getName();
 	}
 }
