@@ -2,9 +2,10 @@ package org.jurr.behringer.x32.osc.xremoteproxy.endpoints;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.InetSocketAddress;
+import java.net.UnixDomainSocketAddress;
 
 import com.illposed.osc.OSCSerializeException;
-import com.illposed.osc.transport.Transport;
 import org.jurr.behringer.x32.osc.xremoteproxy.Bus;
 import org.jurr.behringer.x32.osc.xremoteproxy.BusManaged;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
@@ -15,13 +16,13 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private final Transport transport;
+	private final MultiClientUDPTransport transport;
 
 	private Thread thread;
 	private Bus bus;
 	private boolean running;
 
-	protected AbstractEndpoint(final Transport transport)
+	protected AbstractEndpoint(final MultiClientUDPTransport transport)
 	{
 		this.transport = transport;
 	}
@@ -38,14 +39,18 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 
 		if (LOGGER.isDebugEnabled())
 		{
-			switch (transport)
-			{
-			case MultiClientUDPTransport mcUDPTransport -> {
-				final String remotes = mcUDPTransport.getRemotes().stream().map(r -> r.getAddress().getCanonicalHostName() + ":" + r.getPort()).reduce((a, b) -> a + ", " + b).map(r -> r + " and ").orElse("");
-				LOGGER.debug("{} started listening on port {} (sending to {}all clients that send us a message first)", getName(), mcUDPTransport.getLocal().getPort(), remotes);
-			}
-			default -> LOGGER.debug("Endpoint {} started listening", getName());
-			}
+			final String remotes = transport.getRemotes().stream().map(r -> {
+				switch (r)
+				{
+				case InetSocketAddress isa:
+					return isa.getAddress().getCanonicalHostName() + ":" + isa.getPort();
+				case UnixDomainSocketAddress udsa:
+					return udsa.getPath().toAbsolutePath().toString();
+				default:
+					return "Unknown socket";
+				}
+			}).reduce((a, b) -> a + ", " + b).map(r -> r + " and ").orElse("");
+			LOGGER.debug("{} started listening on port {} (sending to {}all clients that send us a message first)", getName(), transport.getLocal().getPort(), remotes);
 		}
 	}
 
@@ -54,7 +59,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 		return this.getClass().getSimpleName();
 	}
 
-	protected Transport getTransport()
+	protected MultiClientUDPTransport getTransport()
 	{
 		return transport;
 	}
@@ -104,7 +109,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 
 		try
 		{
-			transport.send(message.toOSCPacket());
+			transport.send(message.toOSCPacket(), message.getSource());
 		}
 		catch (OSCSerializeException e)
 		{

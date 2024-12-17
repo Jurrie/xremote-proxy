@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.StandardProtocolFamily;
 import java.net.StandardSocketOptions;
+import java.net.UnixDomainSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.illposed.osc.BufferBytesReceiver;
 import com.illposed.osc.LibraryInfo;
@@ -46,7 +49,7 @@ public class MultiClientUDPTransport implements Transport
 	private final ByteBuffer recvBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 	private final ByteBuffer sendBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 
-	private final List<InetSocketAddress> remotes;
+	private final List<SocketAddress> remotes;
 	private final InetSocketAddress local;
 	private final DatagramChannel channel;
 	private final MultiClientOSCDatagramChannel oscChannel;
@@ -124,19 +127,91 @@ public class MultiClientUDPTransport implements Transport
 	 *
 	 * @return The list of remote clients
 	 */
-	public List<InetSocketAddress> getRemotes()
+	public List<SocketAddress> getRemotes()
 	{
 		return remotes;
 	}
 
+	/**
+	 * @deprecated Better use {@link #send(OSCPacket, SocketAddress)} with the second argument <code>null</code>.
+	 */
+	@Deprecated
 	@Override
 	public void send(final OSCPacket packet) throws IOException, OSCSerializeException
 	{
+		LOGGER.warn("Sending packet to all known sources, even the source that orignally sent us the message!");
 		oscChannel.send(sendBuffer, packet, remotes);
 	}
 
+	/**
+	 * Sends to all known remotes, except the one given as <code>source</code>.
+	 *
+	 * @param packet The OSC packet to send
+	 * @param source The address to exclude from sending (can be NULL in which case we send to all remotes known)
+	 * @throws IOException
+	 * @throws OSCSerializeException
+	 */
+	public void send(final OSCPacket packet, final SocketAddress source) throws IOException, OSCSerializeException
+	{
+		oscChannel.send(sendBuffer, packet, remotes.stream().filter(sameAddress(source).negate()).toList());
+	}
+
+	private Predicate<? super SocketAddress> sameAddress(final SocketAddress source)
+	{
+		return switch (source)
+		{
+		case InetSocketAddress isa -> sameAddress(isa);
+		case UnixDomainSocketAddress udsa -> destination -> destination.equals(udsa);
+		default -> destination -> {
+			LOGGER.warn("Unknown socket address type {}", source.getClass().getCanonicalName());
+			return destination.equals(source);
+		};
+		};
+	}
+
+	private Predicate<? super SocketAddress> sameAddress(final InetSocketAddress source)
+	{
+		return destination -> {
+			if (destination instanceof InetSocketAddress destinationISA)
+			{
+				final InetAddress sourceAddress = source.getAddress();
+				final String sourceHostname = source.getHostName();
+				final InetAddress destinationAddress = destinationISA.getAddress();
+				final String destinationHostname = destinationISA.getHostName();
+
+				boolean result = false;
+				if (sourceAddress != null && destinationAddress != null)
+				{
+					result = sourceAddress.equals(destinationAddress);
+				}
+				else if (sourceHostname != null && destinationHostname != null)
+				{
+					result = sourceHostname.equals(destinationHostname);
+				}
+
+				if (LOGGER.isDebugEnabled())
+				{
+					if (result)
+					{
+						LOGGER.debug("InetSocketAddresses (excluding ports) are the same: source {} ({}) = dest {} ({})", sourceAddress, sourceHostname, destinationAddress, destinationHostname);
+					}
+					else
+					{
+						LOGGER.debug("InetSocketAddresses (excluding ports) are NOT the same: source {} ({}) != dest {} ({})", sourceAddress, sourceHostname, destinationAddress, destinationHostname);
+					}
+				}
+
+				return result;
+			}
+			else
+			{
+				return false;
+			}
+		};
+	}
+
 	@Override
-	public OSCPacket receive() throws IOException, OSCParseException
+	public OSCPacketAndSource receive() throws IOException, OSCParseException
 	{
 		return oscChannel.read(recvBuffer);
 	}
@@ -193,20 +268,22 @@ public class MultiClientUDPTransport implements Transport
 		}
 
 		@Override
-		public OSCPacket read(final ByteBuffer recvBuffer) throws IOException, OSCParseException
+		public OSCPacketAndSource read(final ByteBuffer recvBuffer) throws IOException, OSCParseException
 		{
 			boolean completed = false;
-			OSCPacket oscPacket;
+			final OSCPacket oscPacket;
+			final SocketAddress clientAddress;
 			try
 			{
 				begin();
 
 				recvBuffer.clear();
-				final SocketAddress clientAddress = underlyingChannel.receive(recvBuffer);
-				if (!remotes.contains(clientAddress))
+				clientAddress = underlyingChannel.receive(recvBuffer);
+
+				if (remotes.stream().noneMatch(sameAddress(clientAddress)))
 				{
 					LOGGER.info("New client detected on {}:{}. Client {} has sent us its first message.", local.getAddress().getCanonicalHostName(), local.getPort(), clientAddress);
-					remotes.add((InetSocketAddress) clientAddress);
+					remotes.add(clientAddress);
 				}
 
 				recvBuffer.flip();
@@ -230,10 +307,10 @@ public class MultiClientUDPTransport implements Transport
 				end(completed);
 			}
 
-			return oscPacket;
+			return new OSCPacketAndSource(oscPacket, clientAddress);
 		}
 
-		public void send(final ByteBuffer sendBuffer, final OSCPacket packet, final List<InetSocketAddress> remoteAddresses) throws IOException, OSCSerializeException
+		public void send(final ByteBuffer sendBuffer, final OSCPacket packet, final List<SocketAddress> remoteAddresses) throws IOException, OSCSerializeException
 		{
 			boolean completed = false;
 			try
@@ -246,6 +323,7 @@ public class MultiClientUDPTransport implements Transport
 				sendBuffer.flip();
 				for (final SocketAddress remoteAddress : remoteAddresses)
 				{
+					LOGGER.trace("Sending to {}", remoteAddress.toString());
 					sendBuffer.rewind();
 					underlyingChannel.send(sendBuffer, remoteAddress);
 				}

@@ -16,31 +16,32 @@ import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.EncoderChangeX32OSCM
 public class X32ToQLCPlusRouter extends AbstractRouter
 {
 	@Override
-	public ReceiveResult onMessageReceived(final AbstractEndpoint<?> source, final AbstractOSCMessage message)
+	public ReceiveResult onMessageReceived(final AbstractEndpoint<?> sourceEndpoint, final AbstractOSCMessage message)
 	{
-		// This logic also sends back to the party that sends the original message to us first. This is not correct, but other parties do not seem to mind.
+		// To prevent sending back to the party that sends the original message to us first we need to retain the 'source' property.
+		// So when converting an OSC message between X32 variant and QLC+ variant we copy the source property.
 
 		if (message instanceof ButtonChangeX32OSCMessage buttonPressedMsg)
 		{
-			final ButtonChangeQLCPlusOSCMessage qlcPlusMessage = new ButtonChangeQLCPlusOSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed());
+			final ButtonChangeQLCPlusOSCMessage qlcPlusMessage = new ButtonChangeQLCPlusOSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed(), buttonPressedMsg.getSource());
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, buttonPressedMsg));
 		}
 		else if (message instanceof EncoderChangeX32OSCMessage encoderChangeMsg)
 		{
-			final EncoderChangeQLCPlusOSCMessage qlcPlusMessage = new EncoderChangeQLCPlusOSCMessage(map(encoderChangeMsg.getEncoder()), encoderChangeMsg.getValue() / 127f);
+			final EncoderChangeQLCPlusOSCMessage qlcPlusMessage = new EncoderChangeQLCPlusOSCMessage(map(encoderChangeMsg.getEncoder()), encoderChangeMsg.getValue() / 127f, encoderChangeMsg.getSource());
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, encoderChangeMsg));
 		}
 		else if (message instanceof ButtonChangeQLCPlusOSCMessage buttonPressedMsg)
 		{
-			final ButtonChangeX32OSCMessage x32Message = new ButtonChangeX32OSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed());
+			final ButtonChangeX32OSCMessage x32Message = new ButtonChangeX32OSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed(), buttonPressedMsg.getSource());
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, x32Message));
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, buttonPressedMsg));
 		}
 		else if (message instanceof EncoderChangeQLCPlusOSCMessage encoderChangeMsg)
 		{
-			final EncoderChangeX32OSCMessage x32Message = new EncoderChangeX32OSCMessage(map(encoderChangeMsg.getEncoder()), (byte) (encoderChangeMsg.getValue() * 127));
+			final EncoderChangeX32OSCMessage x32Message = new EncoderChangeX32OSCMessage(map(encoderChangeMsg.getEncoder()), (byte) (encoderChangeMsg.getValue() * 127), encoderChangeMsg.getSource());
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, x32Message));
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, encoderChangeMsg));
 		}

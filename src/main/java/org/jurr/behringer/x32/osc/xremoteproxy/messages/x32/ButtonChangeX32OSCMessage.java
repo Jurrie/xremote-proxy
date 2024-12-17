@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.x32;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,7 +52,7 @@ public class ButtonChangeX32OSCMessage extends AbstractX32OSCMessage
 	private final X32Button button;
 	private final boolean pressed;
 
-	public static ButtonChangeX32OSCMessage fromOSCMessage(final OSCMessage oscMessage)
+	public static ButtonChangeX32OSCMessage fromOSCMessage(final OSCMessage oscMessage, final SocketAddress source)
 	{
 		final Matcher matcher = ADDRESS.matcher(oscMessage.getAddress());
 		if (!matcher.matches())
@@ -72,11 +73,12 @@ public class ButtonChangeX32OSCMessage extends AbstractX32OSCMessage
 
 		final boolean pressed = ((Integer) oscMessage.getArguments().get(0)).equals(VALUE_PRESSED);
 
-		return new ButtonChangeX32OSCMessage(button, pressed);
+		return new ButtonChangeX32OSCMessage(button, pressed, source);
 	}
 
-	public ButtonChangeX32OSCMessage(final X32Button button, final boolean pressed)
+	public ButtonChangeX32OSCMessage(final X32Button button, final boolean pressed, final SocketAddress source)
 	{
+		super(source);
 		this.button = button;
 		this.pressed = pressed;
 	}

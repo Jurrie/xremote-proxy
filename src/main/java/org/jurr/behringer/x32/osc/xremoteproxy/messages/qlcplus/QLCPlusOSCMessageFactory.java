@@ -1,5 +1,7 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus;
 
+import java.net.SocketAddress;
+
 import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
@@ -12,25 +14,25 @@ public class QLCPlusOSCMessageFactory
 	{
 	}
 
-	public static AbstractOSCMessage fromData(final AbstractEndpoint<?> source, final OSCPacket data)
+	public static AbstractOSCMessage fromData(final AbstractEndpoint<?> sourceEndpoint, final OSCPacket oscPacket, final SocketAddress source)
 	{
 		AbstractQLCPlusOSCMessage message = null;
 
-		if (data instanceof OSCMessage oscMessage)
+		if (oscPacket instanceof OSCMessage oscMessage)
 		{
-			message = ButtonChangeQLCPlusOSCMessage.fromOSCMessage(oscMessage);
+			message = ButtonChangeQLCPlusOSCMessage.fromOSCMessage(oscMessage, source);
 			if (message != null)
 			{
 				return message;
 			}
 
-			message = EncoderChangeQLCPlusOSCMessage.fromOSCMessage(oscMessage);
+			message = EncoderChangeQLCPlusOSCMessage.fromOSCMessage(oscMessage, source);
 			if (message != null)
 			{
 				return message;
 			}
 		}
 
-		return new RawOSCMessage(source, data);
+		return new RawOSCMessage(sourceEndpoint, oscPacket, source);
 	}
 }

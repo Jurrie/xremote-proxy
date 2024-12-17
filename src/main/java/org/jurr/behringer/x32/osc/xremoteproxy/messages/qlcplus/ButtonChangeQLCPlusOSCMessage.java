@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,7 +52,7 @@ public class ButtonChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	private final QLCPlusButton button;
 	private final boolean pressed;
 
-	public static ButtonChangeQLCPlusOSCMessage fromOSCMessage(final OSCMessage oscMessage)
+	public static ButtonChangeQLCPlusOSCMessage fromOSCMessage(final OSCMessage oscMessage, final SocketAddress source)
 	{
 		final Matcher matcher = ADDRESS.matcher(oscMessage.getAddress());
 		if (!matcher.matches())
@@ -72,11 +73,12 @@ public class ButtonChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 
 		final boolean pressed = ((Float) oscMessage.getArguments().get(0)).equals(VALUE_PRESSED);
 
-		return new ButtonChangeQLCPlusOSCMessage(buttonId, pressed);
+		return new ButtonChangeQLCPlusOSCMessage(buttonId, pressed, source);
 	}
 
-	public ButtonChangeQLCPlusOSCMessage(final QLCPlusButton button, final boolean pressed)
+	public ButtonChangeQLCPlusOSCMessage(final QLCPlusButton button, final boolean pressed, final SocketAddress source)
 	{
+		super(source);
 		this.button = button;
 		this.pressed = pressed;
 	}

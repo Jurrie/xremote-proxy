@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.x32;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public class EncoderChangeX32OSCMessage extends AbstractX32OSCMessage
 	private final X32Encoder encoder;
 	private final byte value;
 
-	public static EncoderChangeX32OSCMessage fromOSCMessage(final OSCMessage oscMessage)
+	public static EncoderChangeX32OSCMessage fromOSCMessage(final OSCMessage oscMessage, final SocketAddress source)
 	{
 		final Matcher matcher = ADDRESS.matcher(oscMessage.getAddress());
 		if (!matcher.matches())
@@ -70,11 +71,12 @@ public class EncoderChangeX32OSCMessage extends AbstractX32OSCMessage
 
 		final byte value = ((Integer) oscMessage.getArguments().get(0)).byteValue();
 
-		return new EncoderChangeX32OSCMessage(encoder, value);
+		return new EncoderChangeX32OSCMessage(encoder, value, source);
 	}
 
-	public EncoderChangeX32OSCMessage(final X32Encoder encoder, final byte value)
+	public EncoderChangeX32OSCMessage(final X32Encoder encoder, final byte value, final SocketAddress source)
 	{
+		super(source);
 		this.encoder = encoder;
 		this.value = value;
 	}

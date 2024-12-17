@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import com.illposed.osc.OSCMessage;
-import com.illposed.osc.OSCPacket;
 import com.illposed.osc.OSCParseException;
 import com.illposed.osc.OSCSerializeException;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.MultiClientUDPTransport;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.OSCPacketAndSource;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.AbstractX32OSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.X32OSCMessageFactory;
@@ -62,9 +62,9 @@ public class X32Endpoint extends AbstractEndpoint<AbstractX32OSCMessage>
 		{
 			try
 			{
-				final OSCPacket received = getTransport().receive();
+				final OSCPacketAndSource received = getTransport().receive();
 
-				final AbstractOSCMessage message = X32OSCMessageFactory.fromData(this, received);
+				final AbstractOSCMessage message = X32OSCMessageFactory.fromData(this, received.getWrappedPacket(), received.getSource());
 
 				getBus().messageReceived(this, message);
 			}
@@ -123,7 +123,7 @@ public class X32Endpoint extends AbstractEndpoint<AbstractX32OSCMessage>
 			{
 				try
 				{
-					getTransport().send(XREMOTE_OSC_MESSAGE);
+					getTransport().send(XREMOTE_OSC_MESSAGE, null);
 					LOGGER.debug("Sent /xremote to {}.", x32Address.getAddress().getCanonicalHostName());
 				}
 				catch (IOException | OSCSerializeException e)

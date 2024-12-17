@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus;
 
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public class EncoderChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	private final QLCPlusEncoder encoder;
 	private final float value;
 
-	public static EncoderChangeQLCPlusOSCMessage fromOSCMessage(final OSCMessage oscMessage)
+	public static EncoderChangeQLCPlusOSCMessage fromOSCMessage(final OSCMessage oscMessage, final SocketAddress source)
 	{
 		final Matcher matcher = ADDRESS.matcher(oscMessage.getAddress());
 		if (!matcher.matches())
@@ -70,11 +71,12 @@ public class EncoderChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 
 		final float value = (Float) oscMessage.getArguments().get(0);
 
-		return new EncoderChangeQLCPlusOSCMessage(encoderId, value);
+		return new EncoderChangeQLCPlusOSCMessage(encoderId, value, source);
 	}
 
-	public EncoderChangeQLCPlusOSCMessage(final QLCPlusEncoder encoder, final float value)
+	public EncoderChangeQLCPlusOSCMessage(final QLCPlusEncoder encoder, final float value, final SocketAddress source)
 	{
+		super(source);
 		this.encoder = encoder;
 		this.value = value;
 	}

@@ -5,10 +5,10 @@ import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
 import java.util.List;
 
-import com.illposed.osc.OSCPacket;
 import com.illposed.osc.OSCParseException;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.MultiClientUDPTransport;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.OSCPacketAndSource;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.AbstractQLCPlusOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.QLCPlusOSCMessageFactory;
@@ -42,9 +42,9 @@ public class QLCPlusEndpoint extends AbstractEndpoint<AbstractQLCPlusOSCMessage>
 		{
 			try
 			{
-				final OSCPacket received = getTransport().receive();
+				final OSCPacketAndSource received = getTransport().receive();
 
-				final AbstractOSCMessage message = QLCPlusOSCMessageFactory.fromData(this, received);
+				final AbstractOSCMessage message = QLCPlusOSCMessageFactory.fromData(this, received.getWrappedPacket(), received.getSource());
 
 				getBus().messageReceived(this, message);
 			}
