@@ -156,10 +156,11 @@ public class MultiClientUDPTransport implements Transport
 		oscChannel.send(sendBuffer, packet, remotes.stream().filter(sameAddress(source).negate()).toList());
 	}
 
-	private Predicate<? super SocketAddress> sameAddress(final SocketAddress source)
+	static Predicate<? super SocketAddress> sameAddress(final SocketAddress source)
 	{
 		return switch (source)
 		{
+		case null -> destination -> false;
 		case InetSocketAddress isa -> sameAddress(isa);
 		case UnixDomainSocketAddress udsa -> destination -> destination.equals(udsa);
 		default -> destination -> {
@@ -169,7 +170,7 @@ public class MultiClientUDPTransport implements Transport
 		};
 	}
 
-	private Predicate<? super SocketAddress> sameAddress(final InetSocketAddress source)
+	private static Predicate<? super SocketAddress> sameAddress(final InetSocketAddress source)
 	{
 		return destination -> {
 			if (destination instanceof InetSocketAddress destinationISA)
