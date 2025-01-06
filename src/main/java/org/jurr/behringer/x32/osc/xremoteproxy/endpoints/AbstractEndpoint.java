@@ -37,7 +37,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 		thread = new Thread(this);
 		thread.start();
 
-		if (LOGGER.isDebugEnabled())
+		if (LOGGER.isInfoEnabled())
 		{
 			final String remotes = transport.getRemotes().stream().map(r -> {
 				switch (r)
@@ -50,7 +50,7 @@ public abstract class AbstractEndpoint<T extends AbstractOSCMessage> implements 
 					return "Unknown socket";
 				}
 			}).reduce((a, b) -> a + ", " + b).map(r -> r + " and ").orElse("");
-			LOGGER.debug("{} started listening on port {} (sending to {}all clients that send us a message first)", getName(), transport.getLocal().getPort(), remotes);
+			LOGGER.info("{} started listening on port {} (sending to {}all clients that send us a message first)", getName(), transport.getLocal().getPort(), remotes);
 		}
 	}
 
