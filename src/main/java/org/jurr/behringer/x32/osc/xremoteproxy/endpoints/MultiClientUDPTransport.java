@@ -7,6 +7,7 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.SocketException;
 import java.net.StandardProtocolFamily;
 import java.net.StandardSocketOptions;
 import java.net.UnixDomainSocketAddress;
@@ -140,7 +141,7 @@ public class MultiClientUDPTransport implements Transport
 	public void send(final OSCPacket packet) throws IOException, OSCSerializeException
 	{
 		LOGGER.warn("Sending packet to all known sources, even the source that orignally sent us the message!");
-		oscChannel.send(sendBuffer, packet, remotes);
+		send(packet, null);
 	}
 
 	/**
@@ -326,9 +327,24 @@ public class MultiClientUDPTransport implements Transport
 				{
 					LOGGER.trace("Sending to {}", remoteAddress);
 					sendBuffer.rewind();
-					underlyingChannel.send(sendBuffer, remoteAddress);
+					try
+					{
+						underlyingChannel.send(sendBuffer, remoteAddress);
+					}
+					catch (SocketException e)
+					{
+						final String errorMessage = e.getMessage();
+						if (errorMessage != null && errorMessage.contains("Network is unreachable"))
+						{
+							LOGGER.warn("Could not send to {} because that network was unreachable", remoteAddress);
+						}
+						else
+						{
+							throw e;
+						}
+					}
 				}
-				sendBuffer.flip();
+				sendBuffer.clear();
 				completed = true;
 			}
 			finally
