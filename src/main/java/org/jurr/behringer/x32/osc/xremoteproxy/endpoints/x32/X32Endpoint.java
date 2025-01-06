@@ -130,6 +130,10 @@ public class X32Endpoint extends AbstractEndpoint<AbstractX32OSCMessage>
 				{
 					LOGGER.error("Error sending /xremote to X32 at " + x32Address.getAddress().getCanonicalHostName(), e);
 				}
+				catch (Exception e)
+				{
+					LOGGER.error("Unknown error sending /xremote to X32 at " + x32Address.getAddress().getCanonicalHostName(), e);
+				}
 			}
 		}
 	}
