@@ -8,8 +8,9 @@ Other programs that send OSC messages in either X32 format or QLC+ format are al
 
 ## What to expect / what not to expect
 
-This program only supports the user assignable buttons and rotary encoders found on the X32 consoles. Probably other OSC messages could also be captured and converted, but I have no need for that.
+This program only supports the mutegroup buttons and the user assignable buttons and rotary encoders found on the X32 consoles. Probably other OSC messages could also be captured and converted, but I have no need for that.
 
+### Note when using user assignable buttons and encoders
 When triggering the user assignable button on the X32, the function assigned to it will trigger,  _and_  an OSC message will be sent.
 This OSC message will be converted by `xremote-proxy` and passed on to QLC+.
 There, the button assigned to the OSC message will trigger.
