@@ -20,6 +20,8 @@ import java.util.function.Predicate;
 
 import com.illposed.osc.BufferBytesReceiver;
 import com.illposed.osc.LibraryInfo;
+import com.illposed.osc.OSCBundle;
+import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 import com.illposed.osc.OSCParseException;
 import com.illposed.osc.OSCParser;
@@ -215,7 +217,58 @@ public class MultiClientUDPTransport implements Transport
 	@Override
 	public OSCPacketAndSource receive() throws IOException, OSCParseException
 	{
-		return oscChannel.read(recvBuffer);
+		final OSCPacketAndSource oscPacketAndSource = oscChannel.read(recvBuffer);
+		logReceivedOSCPacket(oscPacketAndSource);
+		return oscPacketAndSource;
+	}
+
+	private static void logReceivedOSCPacket(final OSCPacketAndSource received)
+	{
+		if (LOGGER.isTraceEnabled())
+		{
+			if (received.getWrappedPacket() instanceof OSCBundle oscBundle)
+			{
+				LOGGER.trace("Received OSC bundle containing {} messages from {}:", oscBundle.getPackets().size(), received.getSource());
+				for (final OSCPacket packet : oscBundle.getPackets())
+				{
+					if (packet instanceof OSCMessage message)
+					{
+						LOGGER.trace("  {}", oscPacketToString(message));
+					}
+					else
+					{
+						LOGGER.trace("  {}", packet);
+					}
+				}
+			}
+			else if (received.getWrappedPacket() instanceof OSCMessage message)
+			{
+				LOGGER.trace("Received OSC message from {}.", received.getSource());
+				LOGGER.trace("  {}", oscPacketToString(message));
+			}
+			else
+			{
+				LOGGER.trace("Received unknown OSC packet {} from {}.", received.getWrappedPacket(), received.getSource());
+			}
+		}
+	}
+
+	private static String oscPacketToString(final OSCMessage message)
+	{
+		final StringBuilder sb = new StringBuilder();
+		sb.append(message.getAddress());
+		sb.append(", args: [");
+		for (int i = 0; i < message.getArguments().size(); i++)
+		{
+			final Object arg = message.getArguments().get(i);
+
+			if (i > 0)
+			{
+				sb.append(", ");
+			}
+			sb.append(arg);
+		}
+		return sb.append("]").toString();
 	}
 
 	@Override
