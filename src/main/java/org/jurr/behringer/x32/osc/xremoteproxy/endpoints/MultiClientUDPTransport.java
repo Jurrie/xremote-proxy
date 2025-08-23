@@ -74,6 +74,7 @@ public class MultiClientUDPTransport implements Transport
 	{
 		this.local = local;
 		this.remotes = Collections.synchronizedList(new ArrayList<>(remotes));
+		LOGGER.debug("Binding to {}", local);
 
 		final DatagramChannel tmpChannel;
 		if (LibraryInfo.hasStandardProtocolFamily())
@@ -154,7 +155,18 @@ public class MultiClientUDPTransport implements Transport
 	 */
 	public void send(final OSCPacket packet, final SocketAddress source) throws IOException, OSCSerializeException
 	{
-		oscChannel.send(sendBuffer, packet, remotes.stream().filter(sameAddress(source).negate()).toList());
+		final List<SocketAddress> destinations = remotes.stream().filter(destination -> {
+			if (sameAddress(source).test(destination))
+			{
+				LOGGER.debug("Not sending to {}, as it is the same as the source address {}", destination, source);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}).toList();
+		oscChannel.send(sendBuffer, packet, destinations);
 	}
 
 	static Predicate<? super SocketAddress> sameAddress(final SocketAddress source)
@@ -189,18 +201,6 @@ public class MultiClientUDPTransport implements Transport
 				else if (sourceHostname != null && destinationHostname != null)
 				{
 					result = sourceHostname.equals(destinationHostname);
-				}
-
-				if (LOGGER.isDebugEnabled())
-				{
-					if (result)
-					{
-						LOGGER.debug("InetSocketAddresses (excluding ports) are the same: source {} ({}) = dest {} ({})", sourceAddress, sourceHostname, destinationAddress, destinationHostname);
-					}
-					else
-					{
-						LOGGER.debug("InetSocketAddresses (excluding ports) are NOT the same: source {} ({}) != dest {} ({})", sourceAddress, sourceHostname, destinationAddress, destinationHostname);
-					}
 				}
 
 				return result;
