@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.x32;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -102,7 +103,7 @@ public class ButtonChangeX32OSCMessage extends AbstractX32OSCMessage
 	@Override
 	public String toString()
 	{
-		return "ButtonChangeX32OSCMessage [button=" + button + ", pressed=" + pressed + "]";
+		return MethodHandles.lookup().lookupClass().getSimpleName() + " [button=" + button + ", pressed=" + pressed + "]";
 	}
 
 	private static String buttonToOSCAddressId(final X32Button button)

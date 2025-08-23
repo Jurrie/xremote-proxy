@@ -31,6 +31,12 @@ public class QLCPlusOSCMessageFactory
 			{
 				return message;
 			}
+
+			message = MutegroupChangeQLCPlusOSCMessage.fromOSCMessage(oscMessage, source);
+			if (message != null)
+			{
+				return message;
+			}
 		}
 
 		return new RawOSCMessage(sourceEndpoint, oscPacket, source);

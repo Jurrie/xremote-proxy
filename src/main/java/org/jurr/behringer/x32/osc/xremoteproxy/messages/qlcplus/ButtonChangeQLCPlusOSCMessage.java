@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -96,7 +97,7 @@ public class ButtonChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	@Override
 	public String toString()
 	{
-		return "ButtonChangeQLCPlusOSCMessage [button=" + button + ", pressed=" + pressed + "]";
+		return MethodHandles.lookup().lookupClass().getSimpleName() + " [button=" + button + ", pressed=" + pressed + "]";
 	}
 
 	@Override

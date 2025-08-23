@@ -8,10 +8,12 @@ import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.ButtonChangeQLCP
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.ButtonChangeQLCPlusOSCMessage.QLCPlusButton;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.EncoderChangeQLCPlusOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.EncoderChangeQLCPlusOSCMessage.QLCPlusEncoder;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus.MutegroupChangeQLCPlusOSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonChangeX32OSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.ButtonChangeX32OSCMessage.X32Button;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.EncoderChangeX32OSCMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.EncoderChangeX32OSCMessage.X32Encoder;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.x32.MutegroupChangeX32OSCMessage;
 
 public class X32ToQLCPlusRouter extends AbstractRouter
 {
@@ -33,6 +35,12 @@ public class X32ToQLCPlusRouter extends AbstractRouter
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, encoderChangeMsg));
 		}
+		else if (message instanceof MutegroupChangeX32OSCMessage mutegroupMsg)
+		{
+			final MutegroupChangeQLCPlusOSCMessage qlcPlusMessage = new MutegroupChangeQLCPlusOSCMessage(mutegroupMsg.getMutegroup(), mutegroupMsg.isPressed(), mutegroupMsg.getSource());
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, qlcPlusMessage));
+			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, mutegroupMsg));
+		}
 		else if (message instanceof ButtonChangeQLCPlusOSCMessage buttonPressedMsg)
 		{
 			final ButtonChangeX32OSCMessage x32Message = new ButtonChangeX32OSCMessage(map(buttonPressedMsg.getButton()), buttonPressedMsg.isPressed(), buttonPressedMsg.getSource());
@@ -44,6 +52,12 @@ public class X32ToQLCPlusRouter extends AbstractRouter
 			final EncoderChangeX32OSCMessage x32Message = new EncoderChangeX32OSCMessage(map(encoderChangeMsg.getEncoder()), (byte) (encoderChangeMsg.getValue() * 127), encoderChangeMsg.getSource());
 			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, x32Message));
 			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, encoderChangeMsg));
+		}
+		else if (message instanceof MutegroupChangeQLCPlusOSCMessage mutegroupMsg)
+		{
+			final MutegroupChangeX32OSCMessage x32Message = new MutegroupChangeX32OSCMessage(mutegroupMsg.getMutegroup(), mutegroupMsg.isPressed(), mutegroupMsg.getSource());
+			getBus().getEndpoints(X32Endpoint.class).forEach(client -> send(client, x32Message));
+			getBus().getEndpoints(QLCPlusEndpoint.class).forEach(client -> send(client, mutegroupMsg));
 		}
 		else
 		{

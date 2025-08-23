@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.x32;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -100,7 +101,7 @@ public class EncoderChangeX32OSCMessage extends AbstractX32OSCMessage
 	@Override
 	public String toString()
 	{
-		return "EncoderChangeX32OSCMessage [encoder=" + encoder + ", value=" + value + "]";
+		return MethodHandles.lookup().lookupClass().getSimpleName() + " [encoder=" + encoder + ", value=" + value + "]";
 	}
 
 	private static String encoderToOSCAddressId(final X32Encoder encoder)

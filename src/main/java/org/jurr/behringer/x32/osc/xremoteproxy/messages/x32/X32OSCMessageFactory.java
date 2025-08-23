@@ -31,6 +31,12 @@ public class X32OSCMessageFactory
 			{
 				return message;
 			}
+
+			message = MutegroupChangeX32OSCMessage.fromOSCMessage(oscMessage, source);
+			if (message != null)
+			{
+				return message;
+			}
 		}
 
 		return new RawOSCMessage(sourceEndPoint, oscPacket, source);

@@ -33,6 +33,10 @@
   <Name>/encoder/B2/value</Name>
   <Type>Knob</Type>
  </Channel>
+ <Channel Number="9903">
+  <Name>/mutegroup/5/value</Name>
+  <Type>Button</Type>
+ </Channel>
  <Channel Number="13210">
   <Name>/encoder/A3/value</Name>
   <Type>Knob</Type>
@@ -43,6 +47,10 @@
  </Channel>
  <Channel Number="18021">
   <Name>/button/A6/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="18905">
+  <Name>/mutegroup/1/value</Name>
   <Type>Button</Type>
  </Channel>
  <Channel Number="19092">
@@ -77,8 +85,16 @@
   <Name>/encoder/B4/value</Name>
   <Type>Knob</Type>
  </Channel>
+ <Channel Number="32354">
+  <Name>/mutegroup/3/value</Name>
+  <Type>Button</Type>
+ </Channel>
  <Channel Number="35415">
   <Name>/button/C12/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="36545">
+  <Name>/mutegroup/6/value</Name>
   <Type>Button</Type>
  </Channel>
  <Channel Number="36593">
@@ -96,6 +112,10 @@
  <Channel Number="47434">
   <Name>/encoder/B3/value</Name>
   <Type>Knob</Type>
+ </Channel>
+ <Channel Number="47482">
+  <Name>/mutegroup/4/value</Name>
+  <Type>Button</Type>
  </Channel>
  <Channel Number="47555">
   <Name>/button/A11/value</Name>
@@ -131,6 +151,10 @@
  </Channel>
  <Channel Number="55728">
   <Name>/button/A7/value</Name>
+  <Type>Button</Type>
+ </Channel>
+ <Channel Number="57783">
+  <Name>/mutegroup/2/value</Name>
   <Type>Button</Type>
  </Channel>
  <Channel Number="58724">

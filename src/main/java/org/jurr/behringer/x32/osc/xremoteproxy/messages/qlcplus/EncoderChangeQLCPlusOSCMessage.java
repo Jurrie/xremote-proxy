@@ -1,5 +1,6 @@
 package org.jurr.behringer.x32.osc.xremoteproxy.messages.qlcplus;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.regex.Matcher;
@@ -94,7 +95,7 @@ public class EncoderChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	@Override
 	public String toString()
 	{
-		return "EncoderChangeQLCPlusOSCMessage [encoder=" + encoder + ", value=" + value + "]";
+		return MethodHandles.lookup().lookupClass().getSimpleName() + " [encoder=" + encoder + ", value=" + value + "]";
 	}
 
 	@Override
