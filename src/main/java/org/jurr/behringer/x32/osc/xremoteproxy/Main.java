@@ -50,6 +50,8 @@ public class Main
 			System.exit(EXIT_OK);
 		}
 
+		setLogLevel();
+
 		try
 		{
 			startApplication();
@@ -70,6 +72,18 @@ public class Main
 			// Try to log anyway; maybe we can still log some info.
 			LOGGER.error("Unchecked exception thrown: {}", e.getMessage());
 			throw e;
+		}
+	}
+
+	private static void setLogLevel()
+	{
+		if (Settings.INSTANCE.isTraceOutput())
+		{
+			System.setProperty("org.jurr.java.slf4j.jansi.ConsoleLogger.level", "TRACE");
+		}
+		else if (Settings.INSTANCE.isVerboseOutput())
+		{
+			System.setProperty("org.jurr.java.slf4j.jansi.ConsoleLogger.level", "DEBUG");
 		}
 	}
 

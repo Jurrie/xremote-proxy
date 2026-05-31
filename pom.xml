@@ -61,9 +61,9 @@
 				<version>1.82</version>
 			</dependency>
 			<dependency>
-				<groupId>org.fusesource.jansi</groupId>
-				<artifactId>jansi</artifactId>
-				<version>2.4.2</version>
+				<groupId>org.jurr.java.slf4j.jansi</groupId>
+				<artifactId>slf4j-jansi</artifactId>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit</groupId>
@@ -89,8 +89,8 @@
 			<artifactId>jcommander</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.fusesource.jansi</groupId>
-			<artifactId>jansi</artifactId>
+			<groupId>org.jurr.java.slf4j.jansi</groupId>
+			<artifactId>slf4j-jansi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
