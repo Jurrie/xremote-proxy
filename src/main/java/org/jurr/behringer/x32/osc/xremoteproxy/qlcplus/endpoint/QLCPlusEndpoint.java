@@ -24,6 +24,8 @@ public class QLCPlusEndpoint extends AbstractUDPEndpoint<AbstractQLCPlusOSCMessa
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	private AbstractQLCPlusOSCMessage lastSentMessage;
+
 	public QLCPlusEndpoint(final InetSocketAddress local, final List<InetSocketAddress> remotes) throws IOException
 	{
 		super(new MultiClientUDPTransport(local, remotes));
@@ -36,6 +38,13 @@ public class QLCPlusEndpoint extends AbstractUDPEndpoint<AbstractQLCPlusOSCMessa
 	}
 
 	@Override
+	public void send(final AbstractQLCPlusOSCMessage message) throws IOException
+	{
+		lastSentMessage = message;
+		super.send(message);
+	}
+
+	@Override
 	public void run()
 	{
 		while (isRunning())
@@ -45,6 +54,13 @@ public class QLCPlusEndpoint extends AbstractUDPEndpoint<AbstractQLCPlusOSCMessa
 				final OSCPacketAndSource received = getTransport().receive();
 
 				final AbstractOSCMessage message = QLCPlusOSCMessageFactory.fromData(this, received.getWrappedPacket(), received.getSource());
+
+				if (message instanceof AbstractQLCPlusOSCMessage qlcPlusMessage && qlcPlusMessage.equals(lastSentMessage))
+				{
+					LOGGER.debug("Ignoring message from QLC+ that we just sent (QLC+ echoes all OSC messages back): {}", message);
+					lastSentMessage = null;
+					continue;
+				}
 
 				getBus().messageReceived(this, message);
 			}

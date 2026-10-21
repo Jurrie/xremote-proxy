@@ -10,4 +10,10 @@ public abstract class AbstractQLCPlusOSCMessage extends AbstractOSCMessage
 	{
 		super(source);
 	}
+
+	@Override
+	public abstract boolean equals(Object obj);
+
+	@Override
+	public abstract int hashCode();
 }

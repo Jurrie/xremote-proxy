@@ -3,6 +3,7 @@ package org.jurr.behringer.x32.osc.xremoteproxy.qlcplus.messages;
 import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,5 +105,30 @@ public class ButtonChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	public OSCPacket toOSCPacket()
 	{
 		return new OSCMessage("/button/" + button.getButtonId() + "/value", Collections.singletonList(pressed ? VALUE_PRESSED : VALUE_RELEASED));
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(button, Boolean.valueOf(pressed));
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		ButtonChangeQLCPlusOSCMessage other = (ButtonChangeQLCPlusOSCMessage) obj;
+		return button == other.button && pressed == other.pressed;
 	}
 }

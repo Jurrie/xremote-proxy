@@ -3,6 +3,7 @@ package org.jurr.behringer.x32.osc.xremoteproxy.qlcplus.messages;
 import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,5 +103,30 @@ public class EncoderChangeQLCPlusOSCMessage extends AbstractQLCPlusOSCMessage
 	public OSCPacket toOSCPacket()
 	{
 		return new OSCMessage("/encoder/" + encoder.getEncoderId() + "/value", Collections.singletonList(value));
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(encoder, Float.valueOf(value));
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		EncoderChangeQLCPlusOSCMessage other = (EncoderChangeQLCPlusOSCMessage) obj;
+		return encoder == other.encoder && Float.floatToIntBits(value) == Float.floatToIntBits(other.value);
 	}
 }
