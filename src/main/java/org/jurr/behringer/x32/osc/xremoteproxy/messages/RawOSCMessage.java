@@ -5,14 +5,14 @@ import java.net.SocketAddress;
 import com.illposed.osc.OSCBundle;
 import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoint.AbstractUDPEndpoint;
 
 public class RawOSCMessage extends AbstractOSCMessage
 {
-	private final AbstractEndpoint<?> sourceEndpoint;
+	private final AbstractUDPEndpoint<?> sourceEndpoint;
 	private final OSCPacket oscPacket;
 
-	public RawOSCMessage(final AbstractEndpoint<?> sourceEndpoint, final OSCPacket oscPacket, final SocketAddress source)
+	public RawOSCMessage(final AbstractUDPEndpoint<?> sourceEndpoint, final OSCPacket oscPacket, final SocketAddress source)
 	{
 		super(source);
 
@@ -20,7 +20,7 @@ public class RawOSCMessage extends AbstractOSCMessage
 		this.oscPacket = oscPacket;
 	}
 
-	public AbstractEndpoint<?> getSourceEndpoint()
+	public AbstractUDPEndpoint<?> getSourceEndpoint()
 	{
 		return sourceEndpoint;
 	}

@@ -5,8 +5,9 @@ import java.lang.invoke.MethodHandles;
 
 import org.jurr.behringer.x32.osc.xremoteproxy.Bus;
 import org.jurr.behringer.x32.osc.xremoteproxy.BusManaged;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoint.AbstractEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.transports.Transport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,9 +53,9 @@ public abstract class AbstractRouter implements BusManaged
 	{
 	}
 
-	public abstract ReceiveResult onMessageReceived(AbstractEndpoint<?> source, AbstractOSCMessage message);
+	public abstract ReceiveResult onMessageReceived(AbstractEndpoint<?, ?> source, AbstractMessage message);
 
-	protected <T extends AbstractOSCMessage> void send(final AbstractEndpoint<T> endpoint, final T command)
+	protected <T extends AbstractMessage, U extends Transport> void send(final AbstractEndpoint<T, U> endpoint, final T command)
 	{
 		try
 		{

@@ -5,8 +5,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.AbstractEndpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractOSCMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.endpoint.AbstractEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter.ReceiveResult;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ public class Bus
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private List<AbstractEndpoint<?>> endpoints;
+	private List<AbstractEndpoint<?, ?>> endpoints;
 	private List<AbstractRouter> routers;
 
 	// This class is responsible for keeping track of all endpoints and routers.
@@ -27,12 +27,12 @@ public class Bus
 		routers = new ArrayList<>();
 	}
 
-	public <T extends AbstractEndpoint<?>> List<T> getEndpoints(final Class<T> ofClass)
+	public <T extends AbstractEndpoint<?, ?>> List<T> getEndpoints(final Class<T> ofClass)
 	{
 		return endpoints.stream().filter(ofClass::isInstance).map(ofClass::cast).toList();
 	}
 
-	public void registerEndpoint(final AbstractEndpoint<?> endpoint)
+	public void registerEndpoint(final AbstractEndpoint<?, ?> endpoint)
 	{
 		endpoint.start(this);
 		endpoints.add(endpoint);
@@ -50,7 +50,7 @@ public class Bus
 		{
 			router.signalStop();
 		}
-		for (final AbstractEndpoint<?> endpoint : endpoints)
+		for (final AbstractEndpoint<?, ?> endpoint : endpoints)
 		{
 			try
 			{
@@ -66,13 +66,13 @@ public class Bus
 		{
 			router.waitUntilStopped();
 		}
-		for (final AbstractEndpoint<?> endpoint : endpoints)
+		for (final AbstractEndpoint<?, ?> endpoint : endpoints)
 		{
 			endpoint.waitUntilStopped();
 		}
 	}
 
-	public void messageReceived(final AbstractEndpoint<?> source, final AbstractOSCMessage message)
+	public void messageReceived(final AbstractEndpoint<?, ?> source, final AbstractMessage message)
 	{
 		LOGGER.debug("Received message {} from {}.", message, source.getName());
 		boolean messageWasHandledAtLeastOnce = false;

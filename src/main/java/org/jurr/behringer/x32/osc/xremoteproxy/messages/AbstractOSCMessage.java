@@ -4,19 +4,17 @@ import java.net.SocketAddress;
 
 import com.illposed.osc.OSCPacket;
 
-public abstract class AbstractOSCMessage
+public abstract class AbstractOSCMessage extends AbstractMessage
 {
-	private final SocketAddress source;
-
 	protected AbstractOSCMessage(final SocketAddress source)
 	{
-		this.source = source;
+		super(source);
 	}
 
-	public SocketAddress getSource()
-	{
-		return source;
-	}
-
+	/**
+	 * Should return the OSC packet that we can use to send to the device in question.
+	 *
+	 * @return
+	 */
 	public abstract OSCPacket toOSCPacket();
 }

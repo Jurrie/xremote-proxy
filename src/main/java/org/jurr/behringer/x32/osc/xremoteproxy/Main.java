@@ -2,15 +2,19 @@ package org.jurr.behringer.x32.osc.xremoteproxy;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.InetSocketAddress;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus.QLCPlusEndpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.X32Endpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.routers.X32ToQLCPlusRouter;
+import org.jurr.behringer.x32.osc.xremoteproxy.qlcplus.endpoint.QLCPlusEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.routers.QLCPlusMessageRouter;
+import org.jurr.behringer.x32.osc.xremoteproxy.routers.WapiMessageRouter;
+import org.jurr.behringer.x32.osc.xremoteproxy.routers.X32MessageRouter;
+import org.jurr.behringer.x32.osc.xremoteproxy.wapi.endpoint.WapiEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.x32.endpoint.X32Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,8 +103,29 @@ public class Main
 		final QLCPlusEndpoint qlcPlusEndpoint = new QLCPlusEndpoint(Settings.INSTANCE.getQLCPlusListenAddress(), Settings.INSTANCE.getQLCPlusAddresses());
 		hub.registerEndpoint(qlcPlusEndpoint);
 
-		final X32ToQLCPlusRouter x32ToQLCPlusRouter = new X32ToQLCPlusRouter();
-		hub.registerRouter(x32ToQLCPlusRouter);
+		for (final InetSocketAddress wapiAddress : Settings.INSTANCE.getWapiAddresses())
+		{
+			final WapiEndpoint wapiEndpoint = new WapiEndpoint(wapiAddress);
+			hub.registerEndpoint(wapiEndpoint);
+		}
+
+		if (!Settings.INSTANCE.getX32Addresses().isEmpty() || !Settings.INSTANCE.getFakeX32Addresses().isEmpty())
+		{
+			final X32MessageRouter x32MessageRouter = new X32MessageRouter();
+			hub.registerRouter(x32MessageRouter);
+		}
+
+		if (!Settings.INSTANCE.getWapiAddresses().isEmpty())
+		{
+			final WapiMessageRouter wapiMessageRouter = new WapiMessageRouter();
+			hub.registerRouter(wapiMessageRouter);
+		}
+
+		if (!Settings.INSTANCE.getQLCPlusAddresses().isEmpty())
+		{
+			final QLCPlusMessageRouter qlcPlusMessageRouter = new QLCPlusMessageRouter();
+			hub.registerRouter(qlcPlusMessageRouter);
+		}
 
 		LOGGER.info("Application started.");
 

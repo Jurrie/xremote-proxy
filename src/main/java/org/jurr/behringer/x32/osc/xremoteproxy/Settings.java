@@ -7,8 +7,9 @@ import java.util.List;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.qlcplus.QLCPlusEndpoint;
-import org.jurr.behringer.x32.osc.xremoteproxy.endpoints.x32.X32Endpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.qlcplus.endpoint.QLCPlusEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.wapi.endpoint.WapiEndpoint;
+import org.jurr.behringer.x32.osc.xremoteproxy.x32.endpoint.X32Endpoint;
 
 public final class Settings
 {
@@ -27,20 +28,23 @@ public final class Settings
 	@Parameter(names = { "--trace", "-t", "--debug", "-d" }, description = "Trace output (implies -v)")
 	private boolean traceOutput = false;
 
-	@Parameter(names = { "--x32" }, description = "Hostname (or IP address) and port where the X32 lives. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". While typically you'ld only have one X32, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = X32InetSocketAddressConverter.class)
-	private List<InetSocketAddress> x32Addresses;
+	@Parameter(names = { "--x32" }, description = "Hostname (or IP address) and port where the X32 lives. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". While typically you'ld only have one X32, this option can be used multiple times, and also accepts a comma-separated list.", converter = X32InetSocketAddressConverter.class)
+	private List<InetSocketAddress> x32Addresses = Collections.emptyList();
 
 	@Parameter(names = { "--fake-x32" }, description = "Hostname (or IP address) and port where fake X32 servers live. A \"fake X32\" is a OSC endpoint that accepts X32 messages, but to which we not send /xremote commands. Format is \"host:port\" and default port is " + X32Endpoint.X32_PORT + ". This option can be used multiple times, and also accepts a comma-separated list.", converter = X32InetSocketAddressConverter.class)
 	private List<InetSocketAddress> fakeX32Address = Collections.emptyList();
 
-	@Parameter(names = { "--qlcplus" }, description = "Hostname (or IP address) and port where QLC+ lives. Format is \"host:port\" and default port is " + QLCPlusEndpoint.DEFAULT_SEND_PORT + ". While typically you'ld only have one QLC+ instance, this option can be used multiple times, and also accepts a comma-separated list.", required = true, converter = QLCPlusInetSocketAddressConverter.class)
-	private List<InetSocketAddress> qlcPlusAddresses;
+	@Parameter(names = { "--x32-listen" }, description = "Hostname (or IP address) and port to listen on for messages of X32 clients. Format is \"host:port\" and default is 0.0.0.0:" + X32Endpoint.X32_PORT + ".", converter = X32InetSocketAddressConverter.class)
+	private InetSocketAddress x32ListenAddress = new InetSocketAddress(X32Endpoint.X32_PORT);
+
+	@Parameter(names = { "--qlcplus" }, description = "Hostname (or IP address) and port where QLC+ lives. Format is \"host:port\" and default port is " + QLCPlusEndpoint.DEFAULT_SEND_PORT + ". While typically you'ld only have one QLC+ instance, this option can be used multiple times, and also accepts a comma-separated list.", converter = QLCPlusInetSocketAddressConverter.class)
+	private List<InetSocketAddress> qlcPlusAddresses = Collections.emptyList();
 
 	@Parameter(names = { "--qlcplus-listen" }, description = "Hostname (or IP address) and port to listen on for QLC+ messages. Format is \"host:port\" and default is 0.0.0.0:" + QLCPlusEndpoint.DEFAULT_RECEIVE_PORT + ".", converter = QLCPlusListenInetSocketAddressConverter.class)
 	private InetSocketAddress qlcPlusListenAddress = new InetSocketAddress(QLCPlusEndpoint.DEFAULT_RECEIVE_PORT);
 
-	@Parameter(names = { "--x32-listen" }, description = "Hostname (or IP address) and port to listen on for messages of X32 clients. Format is \"host:port\" and default is 0.0.0.0:" + X32Endpoint.X32_PORT + ".", converter = X32InetSocketAddressConverter.class)
-	private InetSocketAddress x32ListenAddress = new InetSocketAddress(X32Endpoint.X32_PORT);
+	@Parameter(names = { "--wing" }, description = "Hostname (or IP address) and port where the WING lives. Format is \"host:port\" and default port is " + WapiEndpoint.WAPI_PORT + ". This option can be used multiple times, and also accepts a comma-separated list.", converter = WapiInetSocketAddressConverter.class)
+	private List<InetSocketAddress> wapiAddresses = Collections.emptyList();
 
 	@Parameter(names = { "--run-in-foreground", "--foreground", "-f" }, description = "Run in foreground (wait for ENTER key and then stop)")
 	private boolean runInForeground = false;
@@ -70,6 +74,11 @@ public final class Settings
 		return fakeX32Address;
 	}
 
+	public InetSocketAddress getX32ListenAddress()
+	{
+		return x32ListenAddress;
+	}
+
 	public List<InetSocketAddress> getQLCPlusAddresses()
 	{
 		return qlcPlusAddresses;
@@ -80,10 +89,15 @@ public final class Settings
 		return qlcPlusListenAddress;
 	}
 
-	public InetSocketAddress getX32ListenAddress()
+	public List<InetSocketAddress> getWapiAddresses()
 	{
-		return x32ListenAddress;
+		return wapiAddresses;
 	}
+
+	// public InetSocketAddress getWapiListenAddress()
+	// {
+	// return wapiListenAddress;
+	// }
 
 	public boolean isRunInForeground()
 	{
@@ -138,6 +152,15 @@ public final class Settings
 		protected Integer getDefaultPort()
 		{
 			return QLCPlusEndpoint.DEFAULT_RECEIVE_PORT;
+		}
+	}
+
+	private static class WapiInetSocketAddressConverter extends InetSocketAddressConverter
+	{
+		@Override
+		protected Integer getDefaultPort()
+		{
+			return WapiEndpoint.WAPI_PORT;
 		}
 	}
 }

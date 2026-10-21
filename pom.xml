@@ -72,6 +72,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.jurr.java.wapi</groupId>
+				<artifactId>java-wapi-client</artifactId>
+				<version>1.0.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -79,6 +84,10 @@
 		<dependency>
 			<groupId>com.illposed.osc</groupId>
 			<artifactId>javaosc-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jurr.java.wapi</groupId>
+			<artifactId>java-wapi-client</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
