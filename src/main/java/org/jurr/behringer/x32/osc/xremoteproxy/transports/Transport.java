@@ -21,8 +21,9 @@ public abstract class Transport
 	 * @return the packet received
 	 * @throws IOException if an I/O error occurs while trying to read from the
 	 * @throws ParseException if the packet fails to parse
+	 * @throws InterruptedException
 	 */
-	public abstract Packet receive() throws IOException, ParseException;
+	public abstract Packet receive() throws IOException, ParseException, InterruptedException;
 
 	/**
 	 * Close the socket and free-up resources.
