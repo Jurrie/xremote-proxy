@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoint.AbstractEndpoint;
 import org.jurr.behringer.x32.osc.xremoteproxy.messages.AbstractMessage;
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.RawMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter;
 import org.jurr.behringer.x32.osc.xremoteproxy.routers.AbstractRouter.ReceiveResult;
 import org.slf4j.Logger;
@@ -74,7 +75,15 @@ public class Bus
 
 	public void messageReceived(final AbstractEndpoint<?, ?> source, final AbstractMessage message)
 	{
-		LOGGER.debug("Received message {} from {}.", message, source.getName());
+		if (message instanceof RawMessage rawMessage)
+		{
+			LOGGER.trace("Received raw message {} from {}.", rawMessage, source.getName());
+		}
+		else
+		{
+			LOGGER.info("Received message {} from {}.", message, source.getName());
+		}
+
 		boolean messageWasHandledAtLeastOnce = false;
 
 		for (AbstractRouter router : routers)
@@ -93,7 +102,14 @@ public class Bus
 
 		if (!messageWasHandledAtLeastOnce)
 		{
-			LOGGER.debug("Recieved message {} from {} but no router handled it.", message, source.getName());
+			if (message instanceof RawMessage rawMessage)
+			{
+				LOGGER.trace("Received raw message {} from {} but no router handled it.", rawMessage, source.getName());
+			}
+			else
+			{
+				LOGGER.info("Recieved message {} from {} but no router handled it.", message, source.getName());
+			}
 		}
 	}
 }

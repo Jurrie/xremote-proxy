@@ -7,7 +7,7 @@ import com.illposed.osc.OSCMessage;
 import com.illposed.osc.OSCPacket;
 import org.jurr.behringer.x32.osc.xremoteproxy.endpoint.AbstractUDPEndpoint;
 
-public class RawOSCMessage extends AbstractOSCMessage
+public class RawOSCMessage extends AbstractOSCMessage implements RawMessage
 {
 	private final AbstractUDPEndpoint<?> sourceEndpoint;
 	private final OSCPacket oscPacket;

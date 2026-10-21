@@ -2,10 +2,11 @@ package org.jurr.behringer.x32.osc.xremoteproxy.wapi.endpoint;
 
 import java.net.SocketAddress;
 
+import org.jurr.behringer.x32.osc.xremoteproxy.messages.RawMessage;
 import org.jurr.behringer.x32.osc.xremoteproxy.wapi.messages.AbstractWapiMessage;
 import org.jurr.java.wapi.WapiEvent;
 
-public class RawWapiMessage extends AbstractWapiMessage
+public class RawWapiMessage extends AbstractWapiMessage implements RawMessage
 {
 	private final WapiEndpoint sourceEndpoint;
 	private final WapiEvent wapiEvent;

@@ -27,7 +27,7 @@ public class WapiEndpoint extends AbstractEndpoint<AbstractWapiMessage, WapiTran
 	}
 
 	@Override
-	public void start(Bus bus)
+	public void start(final Bus bus)
 	{
 		super.start(bus);
 
