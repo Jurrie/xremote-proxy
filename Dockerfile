@@ -6,8 +6,9 @@ RUN apt update && apt install -y fakeroot && apt clean
 
 WORKDIR /work
 
+COPY /modules.txt /work/modules.txt
 RUN /opt/java/openjdk/bin/jlink \
-  --add-modules java.base,java.instrument \
+  --add-modules $(cat /work/modules.txt) \
   --strip-debug \
   --compress zip-0 \
   --no-header-files \
@@ -46,8 +47,9 @@ RUN apt update && apt install -y fakeroot && apt clean
 
 WORKDIR /work
 
+COPY /modules.txt /work/modules.txt
 RUN /opt/java/openjdk/bin/jlink \
-  --add-modules java.base,java.instrument \
+  --add-modules $(cat /work/modules.txt) \
   --strip-debug \
   --compress zip-0 \
   --no-header-files \

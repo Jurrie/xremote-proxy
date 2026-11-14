@@ -388,6 +388,22 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>create-modules.txt</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<executable>jdeps</executable>
+							<arguments>
+								<argument>--print-module-deps</argument>
+								<argument>--ignore-missing-deps</argument><!-- Needed because some SLF4j classes depends on classes that can not be found. We never use those SLF4j classes anyway. -->
+								<argument>${project.build.directory}/${project.artifactId}-${project.version}.jar</argument>
+							</arguments>
+							<outputFile>${project.basedir}/modules.txt</outputFile><!-- Under version control so I see when there are new module dependencies. -->
+						</configuration>
+					</execution>
+					<execution>
 						<id>create-deb-packages</id>
 						<goals>
 							<goal>exec</goal>
