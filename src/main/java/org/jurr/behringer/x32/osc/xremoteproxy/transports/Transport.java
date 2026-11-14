@@ -40,7 +40,7 @@ public abstract class Transport
 	{
 		return switch (source)
 		{
-		case null -> destination -> false;
+		case null -> _ -> false;
 		case InetSocketAddress isa -> sameAddress(isa);
 		case UnixDomainSocketAddress udsa -> destination -> destination.equals(udsa);
 		default -> destination -> {

@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # Create the DEB package for AMD64
-FROM --platform=amd64 docker.io/library/eclipse-temurin:23-jdk-noble as builder-amd64
+FROM --platform=amd64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble as builder-amd64
 
 RUN apt update && apt install -y fakeroot && apt clean
 
@@ -40,7 +40,7 @@ RUN /opt/java/openjdk/bin/jpackage \
 
 # -----------------------------------------------------------------------------
 # Create the DEB package for ARM64
-FROM --platform=arm64 docker.io/library/eclipse-temurin:23-jdk-noble as builder-arm64
+FROM --platform=arm64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble as builder-arm64
 
 RUN apt update && apt install -y fakeroot && apt clean
 
