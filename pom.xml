@@ -160,12 +160,6 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jlink-plugin</artifactId>
-					<version>3.3.0</version>
-					<extensions>true</extensions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.16.0</version>
 				</plugin>
