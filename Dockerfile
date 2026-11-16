@@ -1,8 +1,8 @@
 # -----------------------------------------------------------------------------
 # Create the DEB package for AMD64
-FROM --platform=amd64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble as builder-amd64
+FROM --platform=linux/amd64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble AS builder-amd64
 
-RUN apt update && apt install -y fakeroot && apt clean
+RUN apt-get update && apt-get install -y fakeroot && apt-get clean
 
 WORKDIR /work
 
@@ -27,7 +27,7 @@ RUN /opt/java/openjdk/bin/jpackage \
   --name "${project.name}" \
   --vendor "${project.developers[0].name}" \
   --copyright "${project.developers[0].name}" \
-  --about-url "https://github.com/Jurrie/xremote-proxy/" \
+  --about-url "${project.url}" \
   --license-file "/work/LICENSE" \
   --app-version "${project.version}" \
   --linux-deb-maintainer "${project.developers[0].email}" \
@@ -41,9 +41,9 @@ RUN /opt/java/openjdk/bin/jpackage \
 
 # -----------------------------------------------------------------------------
 # Create the DEB package for ARM64
-FROM --platform=arm64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble as builder-arm64
+FROM --platform=linux/arm64 docker.io/library/eclipse-temurin:${maven.compiler.target}-jdk-noble AS builder-arm64
 
-RUN apt update && apt install -y fakeroot && apt clean
+RUN apt-get update && apt-get install -y fakeroot && apt-get clean
 
 WORKDIR /work
 
@@ -68,7 +68,7 @@ RUN /opt/java/openjdk/bin/jpackage \
   --name "${project.name}" \
   --vendor "${project.developers[0].name}" \
   --copyright "${project.developers[0].name}" \
-  --about-url "https://github.com/Jurrie/xremote-proxy/" \
+  --about-url "${project.url}" \
   --license-file "/work/LICENSE" \
   --app-version "${project.version}" \
   --linux-deb-maintainer "${project.developers[0].email}" \
@@ -81,6 +81,6 @@ RUN /opt/java/openjdk/bin/jpackage \
 
 # -----------------------------------------------------------------------------
 # Output the DEB packages
-FROM scratch as output
+FROM scratch AS output
 COPY --from=builder-amd64 /work/output/ .
 COPY --from=builder-arm64 /work/output/ .

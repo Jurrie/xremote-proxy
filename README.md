@@ -110,6 +110,67 @@ ExecStart=/opt/xremote-proxy/bin/xremote-proxy --x32 <your-x32-ip-here> --qlcplu
 
 This will create the file `/etc/systemd/system/xremote-proxy.service.d/override.conf` which will override the defaults of the Systemd service. Then do a `systemctl daemon-reload` and start the service with `systemctl start xremote-proxy`. If things go wrong please check the output of `systemctl status xremote-proxy.service` and `journalctl -u xremote-proxy.service`. If you want the service to start at boot, do a `systemctl enable xremote-proxy`.
 
+# Building
+
+A single `mvn package` builds the jar *and* the Debian packages for both AMD64 and ARM64. You don't need an ARM machine: the ARM64 package is built by a real ARM64 JDK running under QEMU emulation.
+
+## Prerequisites
+
+- **JDK 25** with `jdeps` on your `PATH`. If you use [SDKMAN!](https://sdkman.io/), run `sdk env install` in the project directory to get the version from `.sdkmanrc`.
+- **Maven 3.9.0** or newer.
+- **Podman** and **QEMU user-mode emulation**. On Debian or Ubuntu:
+
+  ```
+  sudo apt install podman qemu-user-static
+  ```
+
+  The `qemu-user-static` package registers QEMU with the kernel's `binfmt_misc`, so ARM64 binaries run transparently, also inside containers. Check that it works with:
+
+  ```
+  podman run --rm --platform linux/arm64 docker.io/library/eclipse-temurin:25-jdk-noble uname -m
+  ```
+
+  This should print `aarch64`.
+
+## Build
+
+```
+mvn package
+```
+
+This will:
+
+1. compile the code and build a jar with all dependencies included (`target/xremote-proxy-<version>.jar`);
+2. run `jdeps` on that jar to find out which JDK modules it needs, and write them to `modules.txt`;
+3. copy the `Dockerfile` to `target/`, filling in values from the `pom.xml` (version, name, Java version, etc.);
+4. run `podman build` with that `Dockerfile`. It has a builder stage for `linux/amd64` and one for `linux/arm64`. Each stage uses `jlink` to create a minimal Java runtime with the modules from `modules.txt`, and `jpackage` to wrap that runtime and the jar into a `.deb`. A final `scratch` stage collects both packages.
+
+The result is in `target/`:
+
+- `xremote-proxy-<version>.jar`
+- `xremote-proxy_<version>_amd64.deb`
+- `xremote-proxy_<version>_arm64.deb`
+
+`modules.txt` is under version control on purpose. If it changes after a build, a (new) dependency needs an extra JDK module. Check the change and commit it.
+
+Expect the ARM64 stage to be quite a bit slower than the AMD64 one. That's the price of emulation.
+
+## Troubleshooting
+
+- **`exec format error` during the ARM64 stage**: QEMU is not registered with `binfmt_misc`. Make sure `qemu-user-static` is installed, and check that `/proc/sys/fs/binfmt_misc/qemu-aarch64` exists. A reboot or `sudo systemctl restart systemd-binfmt` may be needed after installing.
+- **`jdeps: command not found`**: the JDK's `bin` directory is not on your `PATH`.
+
+## Testing the Debian package
+
+`Dockerfile.test` builds a Debian container with systemd that installs the freshly built `.deb`:
+
+```
+podman build -f Dockerfile.test -t xremote-proxy .
+podman run --rm -it --name xremote-proxy xremote-proxy
+```
+
+You can log in as `root` with password `xremote-proxy`, and check the service with `systemctl status xremote-proxy`.
+
 # Legal stuff
 
 Behringer and the Behringer X32 are registered trademarks by Music Tribe. I am not affiliated in any way.

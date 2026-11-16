@@ -7,10 +7,10 @@
 
 FROM debian:stable
 
-RUN apt update && apt install -y systemd-sysv && apt clean && echo 'root:xremote-proxy' | chpasswd
+RUN apt-get update && apt-get install -y systemd-sysv && apt-get clean && echo 'root:xremote-proxy' | chpasswd
 
 COPY target/xremote-proxy*deb /
 
-RUN apt install /xremote-proxy*.deb; systemctl enable xremote-proxy
+RUN apt-get install /xremote-proxy*.deb; systemctl enable xremote-proxy
 
 CMD [ "/sbin/init" ]

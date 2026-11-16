@@ -371,13 +371,13 @@
 						<configuration>
 							<outputDirectory>${project.build.directory}/</outputDirectory>
 							<resources>
-								<resources>
+								<resource>
 									<directory>${project.basedir}</directory>
 									<includes>
 										<include>Dockerfile</include>
 									</includes>
 									<filtering>true</filtering>
-								</resources>
+								</resource>
 							</resources>
 						</configuration>
 					</execution>
