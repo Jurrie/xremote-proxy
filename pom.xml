@@ -417,6 +417,10 @@
 								<argument>.</argument>
 								<argument>--file</argument>
 								<argument>${project.build.directory}/Dockerfile</argument>
+								<!-- Runs the Dockerfile once per platform; the ARM64 run uses QEMU emulation. Both .debs end up in the same output directory.
+									 As an alternative, you could use the "all-platforms" argument to also build for linux/ppc64le, linux/s390x and linux/riscv64. -->
+								<argument>--platform</argument>
+								<argument>linux/amd64,linux/arm64</argument>
 								<argument>--output</argument>
 								<argument>type=local,dest=${project.build.directory}/</argument>
 							</arguments>

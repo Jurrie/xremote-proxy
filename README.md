@@ -143,7 +143,7 @@ This will:
 1. compile the code and build a jar with all dependencies included (`target/xremote-proxy-<version>.jar`);
 2. run `jdeps` on that jar to find out which JDK modules it needs, and write them to `modules.txt`;
 3. copy the `Dockerfile` to `target/`, filling in values from the `pom.xml` (version, name, Java version, etc.);
-4. run `podman build` with that `Dockerfile`. It has a builder stage for `linux/amd64` and one for `linux/arm64`. Each stage uses `jlink` to create a minimal Java runtime with the modules from `modules.txt`, and `jpackage` to wrap that runtime and the jar into a `.deb`. A final `scratch` stage collects both packages.
+4. run `podman build --platform linux/amd64,linux/arm64` with that `Dockerfile`. This runs the `Dockerfile` once for each architecture, the ARM64 run under QEMU emulation. The builder stage uses `jlink` to create a minimal Java runtime with the modules from `modules.txt`, and `jpackage` to wrap that runtime and the jar into a `.deb`. A final `scratch` stage exports the `.deb`, so both packages end up in `target/`.
 
 The result is in `target/`:
 
@@ -153,11 +153,11 @@ The result is in `target/`:
 
 `modules.txt` is under version control on purpose. If it changes after a build, a (new) dependency needs an extra JDK module. Check the change and commit it.
 
-Expect the ARM64 stage to be quite a bit slower than the AMD64 one. That's the price of emulation.
+Expect the ARM64 build to be quite a bit slower than the AMD64 one. That's the price of emulation.
 
 ## Troubleshooting
 
-- **`exec format error` during the ARM64 stage**: QEMU is not registered with `binfmt_misc`. Make sure `qemu-user-static` is installed, and check that `/proc/sys/fs/binfmt_misc/qemu-aarch64` exists. A reboot or `sudo systemctl restart systemd-binfmt` may be needed after installing.
+- **`exec format error` during the ARM64 build**: QEMU is not registered with `binfmt_misc`. Make sure `qemu-user-static` is installed, and check that `/proc/sys/fs/binfmt_misc/qemu-aarch64` exists. A reboot or `sudo systemctl restart systemd-binfmt` may be needed after installing.
 - **`jdeps: command not found`**: the JDK's `bin` directory is not on your `PATH`.
 
 ## Testing the Debian package
