@@ -31,7 +31,8 @@ esac
 # This part is based on what is normally automatically added by dh_installsystemd
 if [ "$1" = "remove" ]; then
 	# Remove the systemd unit file that we manually copied to /lib/systemd/system when we installed.
-	rm /lib/systemd/system/xremote-proxy.service
+	# -f: do not fail (and leave the package half-removed) if the file is already gone.
+	rm -f /lib/systemd/system/xremote-proxy.service
 fi
 
 if [ "$1" = remove ] && [ -d /run/systemd/system ] ; then

@@ -1,0 +1,43 @@
+#!/bin/sh
+# prerm script for xremote-proxy
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <prerm> `remove'
+#        * <old-prerm> `upgrade' <new-version>
+#        * <new-prerm> `failed-upgrade' <old-version>
+#        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
+#        * <deconfigured's-prerm> `deconfigure' `in-favour'
+#          <package-being-installed> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see https://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+package_type=deb
+
+
+case "$1" in
+	remove|upgrade|deconfigure)
+	;;
+
+	failed-upgrade)
+	;;
+
+	*)
+		echo "prerm called with unknown argument \`$1'" >&2
+		exit 1
+	;;
+esac
+
+# This part is based on what is normally automatically added by dh_installsystemd
+# Stop the service before its files are removed. Without this, the JVM keeps running from deleted files until the next reboot.
+# Also stop it on upgrade: postinst only does a "start", which would leave the old version running.
+if [ -z "${DPKG_ROOT:-}" ] && { [ "$1" = remove ] || [ "$1" = upgrade ]; } && [ -d /run/systemd/system ] ; then
+	deb-systemd-invoke stop 'xremote-proxy.service' >/dev/null || true
+fi
+# End automatically added section
+
+exit 0

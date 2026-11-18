@@ -20,6 +20,7 @@ COPY /target/${project.build.finalName}.jar /work/jpackage-input/
 COPY /debian/${project.artifactId}.service /work/jpackage-input/
 COPY LICENSE /work/
 COPY /debian/postinst /work/jpackage-resources/
+COPY /debian/prerm /work/jpackage-resources/
 COPY /debian/postrm /work/jpackage-resources/
 
 RUN /opt/java/openjdk/bin/jpackage \
