@@ -65,6 +65,12 @@ Examples:
 
 This is the host+port where `xremote-proxy` will listen on for incoming OSC messages sent by QLC+ (or an OSC client emulating QLC+).
 
+### --wing
+
+This is the host where `xremote-proxy` will try to find a Behringer WING Compact console. If found, user assignable buttons 1 to 8 are mapped to X32 buttons 1 to 8 (bank C).
+
+Support for WING Compact is preliminary! The mapping is highly specific to my use case. It would be better to rewrite this to some config-file based mapping, so users can configure the mapping between X32/WING/QLC+.
+
 ## "Fake" OSC clients
 
 If you have a third party OSC client that sends/receives messages just like the ones that QLC+ sends/receives, you should:
