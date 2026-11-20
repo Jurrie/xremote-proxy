@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd https://dependency-check.github.io/DependencyCheck/dependency-suppression.1.4.xsd">
+	<suppress>
+		<notes><![CDATA[
+		A heap buffer overflow vulnerability exists in the Jansi JNI "ioctl()" wrapper due to a lack of size verification for the argument array before the system call. This can lead to heap corruption and application crashes (DoS). All versions are believed to be vulnerable. This project is unmaintained at the time of CVE assignment.
+
+		Reason for suppression: the Jansi project seems migrated to org.jline:jansi. We need to do that switch, but not right now.
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.fusesource\.jansi/jansi@.*$</packageUrl>
+		<vulnerabilityName>CVE-2026-8484</vulnerabilityName>
+	</suppress>
+</suppressions>

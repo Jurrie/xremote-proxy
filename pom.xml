@@ -210,6 +210,9 @@
 						<ossIndexWarnOnlyOnRemoteErrors>true</ossIndexWarnOnlyOnRemoteErrors>
 						<ossIndexServerId>sonatype-oss-index</ossIndexServerId>
 						<hostedSuppressionsForceUpdate>true</hostedSuppressionsForceUpdate>
+						<suppressionFiles>
+							<suppressionFile>dependency-check-suppressions.xml</suppressionFile>
+						</suppressionFiles>
 					</configuration>
 				</plugin>
 				<plugin>
